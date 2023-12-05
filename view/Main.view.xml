@@ -1,0 +1,1078 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<mvc:View controllerName="fin.gl.glview.display.controller.Main"
+          id="fin.gl.glview.display.view.Main"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns:core="sap.ui.core"
+          xmlns="sap.m"
+          xmlns:table="sap.ui.table"
+          xmlns:smartfilterbar="sap.ui.comp.smartfilterbar"
+          xmlns:smarttable="sap.ui.comp.smarttable"
+          xmlns:navpopover="sap.ui.comp.navpopover"
+          xmlns:currency="sap.ui.unified"
+          xmlns:f="sap.f"
+          xmlns:l="sap.ui.layout"
+          xmlns:variants="sap.ui.comp.smartvariants"
+          xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+          <App id="fin.gl.glview.display.appframe">
+               <f:DynamicPage id="fin.gl.glview.display.dynamic.page" preserveHeaderStateOnScroll="true" fitContent="true"
+                              headerExpanded="{page>/headerExpanded}" showFooter="{= ${page>/numberOfMessages} > 0 }">
+
+                    <f:dependents>
+                         <core:CommandExecution id="fin.gl.glview.display.command.exe.enter" command="Enter" enabled="true" execute=".onExecuteSearch" />
+                         <core:CommandExecution id="fin.gl.glview.display.command.exe.share" command="Share" enabled="true" execute=".onTitleSharePressed" />
+                         <core:CommandExecution id="fin.gl.glview.display.command.exe.details" command="Details" enabled="true" execute=".onDetailsPressed" />
+                    </f:dependents>
+
+                    <f:title>
+                         <f:DynamicPageTitle id="fin.gl.glview.display.title">
+                              <f:heading>
+                                   <variants:SmartVariantManagement id="fin.gl.glview.display.title.variant" persistencyKey="fin.gl.glview.display.LRF.SFB"
+                                                                    showShare="true" showExecuteOnSelection="true" /> <!-- use persistencyKey of SFB only -->
+                              </f:heading>
+                              <f:actions>
+                                   <ToolbarSpacer id="fin.gl.glview.display.title.toolbarspacer" />
+                                   <Button id="fin.gl.glview.display.title.button.toggle" text="{path:'page>/headerExpanded', formatter:'._formatToggleButtonText'}"
+                                           type="Transparent" press="onToggleHeaderPressed" />
+                                   <Button id="fin.gl.glview.display.title.button.share" icon="sap-icon://action" tooltip="{i18n>TITLE_SHARE}"
+                                           type="Transparent" press="cmd:Share" />
+                              </f:actions>
+                              <f:snappedContent>
+                                   <Text id="fin.gl.glview.display.title.filter.text" wrapping="false" />
+                              </f:snappedContent>
+                         </f:DynamicPageTitle>
+                    </f:title>
+
+                    <f:header>
+                         <f:DynamicPageHeader id="fin.gl.glview.display.header" pinnable="false">
+                              <f:content>
+
+                                   <!-- ************** LABELS FOR ACCESSIBILITY *********** -->
+
+                                   <Label id="fin.gl.glview.display.accessXOPVW"           text="{i18n>SELECT_XOPVW_TT}"             visible="false" />
+                                   <Label id="fin.gl.glview.display.accessStatus"          text="{i18n>SELECT_STATUS}"               visible="false" />
+                                   <Label id="fin.gl.glview.display.accessKeydate"         text="{i18n>SELECT_KEYDATE}"              visible="false" />
+                                   <Label id="fin.gl.glview.display.accessDisplayCurrency" text="{i18n>SELECT_DISPLAY_CURRENCY}"     visible="false" />
+                                   <Label id="fin.gl.glview.display.accessExRateType"      text="{i18n>SELECT_EXCHANGE_RATE_TYPE}"   visible="false" />
+                                   <Label id="fin.gl.glview.display.accessExRateDate"      text="{i18n>SELECT_EXCHANGE_RATE_DATE}"   visible="false" />
+
+                                   <!-- ************** FILTERBAR ************************** -->
+
+                                   <smartfilterbar:SmartFilterBar id="fin.gl.glview.display.smartfilterbar" useToolbar="false"
+                                                                  entitySet="C_JournalEntryItemBrowserResults"
+                                                                  search="cmd:Enter" initialise="onInitFilterBar"
+                                                                  reset="onResetFilterBar" cancel="onFilterBarCancel"
+                                                                  beforeVariantSave="onBeforeSFBVariantSave"
+                                                                  afterVariantSave="onAfterSFBVariantSave"
+                                                                  afterVariantLoad="onAfterSFBVariantLoad"
+                                                                  assignedFiltersChanged="onAssignedFiltersChanged"
+                                                                  smartVariant="fin.gl.glview.display.title.variant"
+                                                                  persistencyKey="fin.gl.glview.display.LRF.SFB">
+                                                                  <!-- persistencyKey max. length = 40 char -->
+
+                                        <!-- ********* FB - custom data ********* -->
+
+                                        <smartfilterbar:customData>
+                                             <core:CustomData id="fin.gl.glview.display.smartfilterbar.cd.defaultDropDownDisplayBehaviour" key="defaultDropDownDisplayBehaviour" value="idAndDescription" />
+                                             <core:CustomData id="fin.gl.glview.display.smartfilterbar.cd.defaultTokenDisplayBehaviour"    key="defaultTokenDisplayBehaviour"    value="idAndDescription" />
+                                             <core:CustomData id="fin.gl.glview.display.smartfilterbar.cd.dateFormatSettings"              key="dateFormatSettings"              value='\{"UTC":true,"style":"short"\}' />
+                                        </smartfilterbar:customData>
+
+                                        <!-- ********* FB - layout data ********* -->
+
+                                        <smartfilterbar:layoutData>
+                                             <FlexItemData id="fin.gl.glview.display.smartfilterbar.ld.shrinkFactor" shrinkFactor="0" />
+                                        </smartfilterbar:layoutData>
+
+                                        <!-- ********* FB - control config ****** -->
+
+                                        <smartfilterbar:controlConfiguration>
+
+                                             <!-- fields needed for filtering in smart table, but not in smart filter bar -->
+                                             <!-- special logic for controlling area - enable as first entry to distinguish between Cloud & OP -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ControllingArea"                key="ControllingArea"                 visible="true" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AccountAssignmentNumber"        key="AccountAssignmentNumber"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AccountingDocumentItem"         key="AccountingDocumentItem"          visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AccountingDocumentTypeName"     key="AccountingDocumentTypeName"      visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AccountingDocumentType_Text"    key="AccountingDocumentType_Text"     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity1Unit"        key="AdditionalQuantity1Unit"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity1"            key="AdditionalQuantity1"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity2Unit"        key="AdditionalQuantity2Unit"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity2"            key="AdditionalQuantity2"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity3Unit"        key="AdditionalQuantity3Unit"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AdditionalQuantity3"            key="AdditionalQuantity3"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AssetAcctTransClassfctn"        key="AssetAcctTransClassfctn"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AssetDepreciationArea"          key="AssetDepreciationArea"           visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.AssetValueDate"                 key="AssetValueDate"                  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.BalanceTransactionCurrency"     key="BalanceTransactionCurrency"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.BaseUnit"                       key="BaseUnit"                        visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.BillToParty"                    key="BillToParty"                     visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.BusinessAreaName"               key="BusinessAreaName"                visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.BusinessArea_Text"              key="BusinessArea_Text"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ClearingDocFiscalYear"          key="ClearingDocFiscalYear"           visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CompanyCodeCurrency"            key="CompanyCodeCurrency"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CompanyCodeName"                key="CompanyCodeName"                 visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ControllingAreaName"            key="ControllingAreaName"             visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ControllingArea_Text"           key="ControllingArea_Text"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ControllingObjectCurrency"      key="ControllingObjectCurrency"       visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ControllingObjectDebitType"     key="ControllingObjectDebitType"      visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CostCenterName"                 key="CostCenterName"                  visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CostCenter_Text"                key="CostCenter_Text"                 visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CostEstimate"                   key="CostEstimate"                    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CostSourceUnit"                 key="CostSourceUnit"                  visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CustomerName"                   key="CustomerName"                    visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.Customer_Text"                  key="Customer_Text"                   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CustomerSupplierCorporateGroup" key="CustomerSupplierCorporateGroup"  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CustomerSupplierCountry"        key="CustomerSupplierCountry"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.CustomerSupplierIndustry"       key="CustomerSupplierIndustry"        visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.DebitCreditCode_Text"           key="DebitCreditCode_Text"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.DepreciationFiscalPeriod"       key="DepreciationFiscalPeriod"        visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.DocumentItemText"               key="DocumentItemText"                visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.EliminationProfitCenter"        key="EliminationProfitCenter"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FiscalYearVariant"              key="FiscalYearVariant"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FixedAmountInGlobalCrcy"        key="FixedAmountInGlobalCrcy"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FixedPriceVarcInGlobalCrcy"     key="FixedPriceVarcInGlobalCrcy"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FixedQuantity"                  key="FixedQuantity"                   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FollowOnDocumentType"           key="FollowOnDocumentType"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency1"           key="FreeDefinedCurrency1"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency2"           key="FreeDefinedCurrency2"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency3"           key="FreeDefinedCurrency3"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency4"           key="FreeDefinedCurrency4"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency5"           key="FreeDefinedCurrency5"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency6"           key="FreeDefinedCurrency6"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency7"           key="FreeDefinedCurrency7"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FreeDefinedCurrency8"           key="FreeDefinedCurrency8"            visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FunctionalAreaName"             key="FunctionalAreaName"              visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.FunctionalArea_Text"            key="FunctionalArea_Text"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GLAccountLongName"              key="GLAccountLongName"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GLAccountName"                  key="GLAccountName"                   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GlobalCurrency"                 key="GlobalCurrency"                  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GLRecordType"                   key="GLRecordType"                    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GroupMasterFixedAsset_Text"     key="GroupMasterFixedAsset_Text"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GrpValnFixedAmtInGlobCrcy"      key="GrpValnFixedAmtInGlobCrcy"       visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GrpValnFixedPrcVarcInGlobCrcy"  key="GrpValnFixedPrcVarcInGlobCrcy"   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.GrpValnTotPrcVarcInGlobCrcy"    key="GrpValnTotPrcVarcInGlobCrcy"     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpclStkSalesDocItm"    key="InventorySpclStkSalesDocItm"     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpclStkSalesDocument"  key="InventorySpclStkSalesDocument"   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpclStockWBSElement"   key="InventorySpclStockWBSElement"    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpecialStockSupplier"  key="InventorySpecialStockSupplier"   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpecialStockType"      key="InventorySpecialStockType"       visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventorySpecialStockValnType"  key="InventorySpecialStockValnType"   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InventoryValuationType"         key="InventoryValuationType"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InvtrySpclStockWBSElmntExtID"   key="InvtrySpclStockWBSElmntExtID"    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.InvoiceItemReference"           key="InvoiceItemReference"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.IsCleared"                      key="IsCleared"                       visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.IsOpenItemManaged"              key="IsOpenItemManaged"               visible="false" /> needed for GRIR Nav -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.IsStatisticalCostCenter"        key="IsStatisticalCostCenter"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.IsStatisticalOrder"             key="IsStatisticalOrder"              visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.IsStatisticalSalesDocument"     key="IsStatisticalSalesDocument"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.JointVentureCostRecoveryCode"   key="JointVentureCostRecoveryCode"    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.JointVentureEquityGroup"        key="JointVentureEquityGroup"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.JointVentureEquityType"         key="JointVentureEquityType"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.LedgerGLLineItem"               key="LedgerGLLineItem"                visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.LedgerName"                     key="LedgerName"                      visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.Ledger_Text"                    key="Ledger_Text"                     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.LineItemIsCompleted"            key="LineItemIsCompleted"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.MasterFixedAsset_Text"          key="MasterFixedAsset_Text"           visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.OffsettingAccountName"          key="OffsettingAccountName"           visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.OperatingConcern"               key="OperatingConcern"                visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.OriginSenderObject"             key="OriginSenderObject"              visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PartnerOrder_Text"              key="PartnerOrder_Text"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PartnerProjectNetworkActivity"  key="PartnerProjectNetworkActivity"   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PartnerSalesDocumentItem"       key="PartnerSalesDocumentItem"        visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PartnerServiceDocumentItem"     key="PartnerServiceDocumentItem"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PredecessorReferenceDocItem"    key="PredecessorReferenceDocItem"     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ProjectExternalID_Text"         key="ProjectExternalID_Text"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PrftCtrValnFxdAmtInGlobCrcy"    key="PrftCtrValnFxdAmtInGlobCrcy"     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PrftCtrValnFxdPrcVarcInGlbCrcy" key="PrftCtrValnFxdPrcVarcInGlbCrcy"  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PrftCtrValnTotPrcVarcInGlbCrcy" key="PrftCtrValnTotPrcVarcInGlbCrcy"  visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ProfitCenterName"               key="ProfitCenterName"                visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ProfitCenter_Text"              key="ProfitCenter_Text"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PurchasingDocumentItem"         key="PurchasingDocumentItem"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.QuantityIsIncomplete"           key="QuantityIsIncomplete"            visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ReferenceDocumentItemGroup"     key="ReferenceDocumentItemGroup"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ReferenceDocumentItem"          key="ReferenceDocumentItem"           visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ReferencePurchaseOrderCategory" key="ReferencePurchaseOrderCategory"  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.RelatedNetworkActivity"         key="RelatedNetworkActivity"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SalesOrderItem"                 key="SalesOrderItem"                  visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SegmentName"                    key="SegmentName"                     visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.Segment_Text"                   key="Segment_Text"                    visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ServiceDocumentItem"            key="ServiceDocumentItem"             visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SettlementReferenceDate"        key="SettlementReferenceDate"         visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ShipToParty"                    key="ShipToParty"                     visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SpecialGLCode"                  key="SpecialGLCode"                   visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SupplierName"                   key="SupplierName"                    visible="false" /> obsolete -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.Supplier_Text"                  key="Supplier_Text"                   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.TimeSheetOvertimeCategory_Text" key="TimeSheetOvertimeCategory_Text"  visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.TotalPriceVarcInGlobalCrcy"     key="TotalPriceVarcInGlobalCrcy"      visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.TransactionTypeDetermination"   key="TransactionTypeDetermination"    visible="false" /> needed for GRIR Nav -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ValuationArea"                  key="ValuationArea"                   visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ValuationFixedQuantity"         key="ValuationFixedQuantity"          visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.ValuationQuantity"              key="ValuationQuantity"               visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.WBSElementExternalID_Text"      key="WBSElementExternalID_Text"       visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.WBSIsStatisticalWBSElement"     key="WBSIsStatisticalWBSElement"      visible="false" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.WorkPackage"                    key="WorkPackage"                     visible="false" />
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.SubLedgerAcctLineItemType"      key="SubLedgerAcctLineItemType"       visible="false" /> -->
+<!--                                         <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.smartfilterbar.cc.PartnerProjectNetworkActivity"  key="PartnerProjectNetworkActivity"   visible="false" /> -->
+
+                                             <!-- advanced area -> special settings -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.FiscalPeriod"       key="FiscalPeriod"
+                                                                                  hasValueHelpDialog="true" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.DocumentDate"       key="DocumentDate"
+                                                                                  hasTypeAhead="false" filterType="interval"
+                                                                                  controlType="date" />
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.DebitCreditCode"    key="DebitCreditCode"
+                                                                                  hasTypeAhead="false" controlType="dropDownList" />
+
+                                             <!-- advanced area -> custom controls -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.XOPVW"              key="IsOpenItemManagedFlag"
+                                                                                  label="{i18n>SELECT_XOPVW}" tooltip="{i18n>SELECT_XOPVW_TT}"
+                                                                                  groupId="DOCUMENT" visible="false">
+                                                  <smartfilterbar:customControl>
+                                                       <Select id="fin.gl.glview.display.sfb.XOPVWselect" selectedKey="DDLB_EXCLUDE"
+                                                               autoAdjustWidth="false" ariaLabelledBy="fin.gl.glview.display.accessXOPVW">
+                                                            <items>
+                                                                 <core:Item id="fin.gl.glview.display.sfb.XOPVWselect.exclude" key="DDLB_EXCLUDE" text="{i18n>SELECT_XOPVW_A}" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.XOPVWselect.include" key="DDLB_INCLUDE" text="{i18n>SELECT_XOPVW_B}" />
+                                                            </items>
+                                                       </Select>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <!-- _BASIC -->
+                                             <smartfilterbar:ControlConfiguration index="0"	id="fin.gl.glview.display.sfb.Ledger"
+                                                                                  key="Ledger" groupId="_BASIC"
+                                                                                  hasTypeAhead="false" controlType="dropDownList" />
+                                             <smartfilterbar:ControlConfiguration index="1"	id="fin.gl.glview.display.sfb.CompanyCode"
+                                                                                  key="CompanyCode" groupId="_BASIC" />
+                                             <smartfilterbar:ControlConfiguration index="2"	id="fin.gl.glview.display.sfb.GLAccount"
+                                                                                  key="GLAccount" groupId="_BASIC" />
+
+                                             <smartfilterbar:ControlConfiguration index="3" id="fin.gl.glview.display.sfb.StatusSelection"
+                                                                                  key="StatusSelection" label="{i18n>SELECT_STATUS}">
+                                                  <smartfilterbar:customControl>
+                                                       <Select id="fin.gl.glview.display.sfb.SSselect" selectedKey="DDLB_STATUS_OPEN"
+                                                               autoAdjustWidth="false" change="onChangeStatus"
+                                                               ariaLabelledBy="fin.gl.glview.display.accessStatus">
+                                                            <items>
+                                                                 <core:Item id="fin.gl.glview.display.sfb.SSselect.all"     key="DDLB_STATUS_ALL" text="{i18n>DDLB_STATUS_ALL}" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.SSselect.open"    key="DDLB_STATUS_OPEN" text="{i18n>DDLB_STATUS_OPEN}" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.SSselect.cleared" key="DDLB_STATUS_CLEARED" text="{i18n>DDLB_STATUS_CLEARED}" />
+                                                            </items>
+                                                       </Select>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <smartfilterbar:ControlConfiguration index="4" id="fin.gl.glview.display.sfb.PostingDate"
+                                                                                  key="PostingDate" groupId="_BASIC"
+                                                                                  conditionType="{module: 'sap.fin.central.lib.daterange.FiscalDateRangeType', entitySetForFiscalYearVariant: 'I_LedgerCompanyCodeVH'}"
+                                                                                  label="{i18n>SELECT_POSTINGDATE}" />
+
+                                             <smartfilterbar:ControlConfiguration index="5" id="fin.gl.glview.display.sfb.ClearingDate"
+                                                                                  key="ClearingDate" groupId="_BASIC"
+                                                                                  conditionType="{module: 'sap.fin.central.lib.daterange.FiscalDateRangeType', entitySetForFiscalYearVariant: 'I_LedgerCompanyCodeVH'}"
+                                                                                  label="{i18n>SELECT_CLEARINGDATE}" />
+
+                                             <smartfilterbar:ControlConfiguration index="6"	id="fin.gl.glview.display.sfb.KeyDate"
+                                                                                  key="KeyDate" label="{i18n>SELECT_KEYDATE}">
+                                                  <smartfilterbar:customControl>
+                                                       <DatePicker id="fin.gl.glview.display.sfb.KDpicker" ariaLabelledBy="fin.gl.glview.display.accessKeydate" change="onKeyDateChanged">
+                                                       </DatePicker>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <smartfilterbar:ControlConfiguration index="7" id="fin.gl.glview.display.sfb.ExpandLevel"
+                                                                                  key="LevelSelection" groupId="_BASIC"
+                                                                                  label="{i18n>SELECT_LEVELS}" visible="false">
+                                                  <smartfilterbar:customControl>
+                                                       <Select id="fin.gl.glview.display.sfb.ExpandLevelInput" selectedKey="L0">
+                                                            <items>
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L0" key="L0" text="{= 0 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L1" key="L1" text="{= 1 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L2" key="L2" text="{= 2 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L3" key="L3" text="{= 3 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L4" key="L4" text="{= 4 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L5" key="L5" text="{= 5 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L6" key="L6" text="{= 6 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L7" key="L7" text="{= 7 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L8" key="L8" text="{= 8 }" />
+                                                                 <core:Item id="fin.gl.glview.display.sfb.ExpandLevelInput.L9" key="L9" text="{= 9 }" />
+                                                            </items>
+                                                       </Select>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <!-- DispCurrParams -->
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.DisplayCurrency"    key="DisplayCurrency"
+                                                                                  label="{i18n>SELECT_DISPLAY_CURRENCY}" tooltip="{i18n>SELECT_DISPLAY_CURRENCY}"
+                                                                                  groupId="DispCurrParams">
+                                                  <smartfilterbar:customControl>
+                                                       <Input id="fin.gl.glview.display.sfb.DisplayCurrencyInput" maxLength="5" showTableSuggestionValueHelp="false"
+                                                              showSuggestion="true" placeholder="{i18n>PLACEHOLDER_LONG}" ariaLabelledBy="fin.gl.glview.display.accessDisplayCurrency">
+                                                       </Input>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.ExRateType"         key="ExchangeRateType"
+                                                                                  label="{i18n>SELECT_EXCHANGE_RATE_TYPE}" tooltip="{i18n>SELECT_EXCHANGE_RATE_TYPE}"
+                                                                                  groupId="DispCurrParams">
+                                                  <smartfilterbar:customControl>
+                                                       <Input id="fin.gl.glview.display.sfb.ExRateTypeInput" maxLength="4" showTableSuggestionValueHelp="false"
+                                                              showSuggestion="true" ariaLabelledBy="fin.gl.glview.display.accessExRateType">
+                                                       </Input>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                             <smartfilterbar:ControlConfiguration id="fin.gl.glview.display.sfb.ExRateDate"         key="ExchangeRateDate"
+                                                                                  label="{i18n>SELECT_EXCHANGE_RATE_DATE}" groupId="DispCurrParams">
+                                                  <smartfilterbar:customControl>
+                                                       <DatePicker id="fin.gl.glview.display.sfb.ExRateDatePicker" ariaLabelledBy="fin.gl.glview.display.accessExRateDate">
+                                                       </DatePicker>
+                                                  </smartfilterbar:customControl>
+                                             </smartfilterbar:ControlConfiguration>
+
+                                        </smartfilterbar:controlConfiguration> 
+
+                                        <!-- ********* FB - group config ******** -->
+
+                                        <smartfilterbar:groupConfiguration>
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Account"         key="_ACCOUNT"                         label="{i18n>FILTERS_GROUP_1}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Admin"           key="_ADMIN"                           label="{i18n>FILTERS_GROUP_13}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Amount1Quantity" key="_AMOUNT1_QUANTITY"                label="{i18n>FILTERS_GROUP_2}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.AmountsFree"     key="_AMOUNTS_FREE"                    label="{i18n>FILTERS_GROUP_3}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Asset"           key="_ASSET"                           label="{i18n>FILTERS_GROUP_4}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Controlling"     key="_CONTROLLING"                     label="{i18n>FILTERS_GROUP_5}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.DocumentA"       key="_DOCUMENT"                        label="{i18n>FILTERS_GROUP_7}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Fiscal"          key="_FISCAL"                          label="{i18n>FILTERS_GROUP_6}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Logistics"       key="_LOGISTICS"                       label="{i18n>FILTERS_GROUP_8}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Partner"         key="_PARTNER"                         label="{i18n>FILTERS_GROUP_9}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.PublicSector"    key="_PUBLIC_SECTOR"                   label="{i18n>FILTERS_GROUP_11}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Reference"       key="_REFERENCE"                       label="{i18n>FILTERS_GROUP_12}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.Sender"          key="_SENDER"                          label="{i18n>FILTERS_GROUP_10B}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.DispCurrParams"  index="00" key="DispCurrParams"        label="{i18n>FILTERS_GROUP_15}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.DocumentB"       key="DOCUMENT"                         label="{i18n>FILTERS_GROUP_16}" />
+                                             <smartfilterbar:GroupConfiguration id="fin.gl.glview.display.smartfilterbar.gc.LITB"            key="C_JournalEntryItemBrowserResults" label="{i18n>FILTERS_GROUP_14}" />
+                                        </smartfilterbar:groupConfiguration>
+
+                                   </smartfilterbar:SmartFilterBar>
+
+                              </f:content>
+                         </f:DynamicPageHeader>
+                    </f:header>
+
+                    <f:content>
+
+                         <!-- ************** TABLE ****************************** -->
+
+                         <smarttable:SmartTable id="fin.gl.glview.display.smarttable" entitySet="C_JournalEntryItemBrowserResults"
+                                                ignoredFields="CompanyCode,CompanyCodeName,GLAccount,GLAccountLongName,ChartOfAccounts,AssignmentReference,FiscalYear,AccountingDocument,AccountingDocumentItem,AccountingDocumentType,AccountingDocumentCategory,PostingDate,LedgerFiscalYear,FiscalPeriod,DocumentDate,ExchangeRateDate,CreationDate,AssetValueDate,SettlementReferenceDate,NetDueDate,PostingKey,AmountInCompanyCodeCurrency,CompanyCodeCurrency,TaxCode,ClearingAccountingDocument,ProfitCenter,Segment,DocumentItemText,LedgerGLLineItem,ControllingArea,IsCleared,ClearingDate,ClearingDocFiscalYear,IsOpenItemManaged,Ledger,SourceLedger,AccountingDocCreatedByUser,OrderID,OrderCategory,MasterFixedAsset,FixedAsset,NumberOfItems"
+                                                tableType="AnalyticalTable" header="{i18n>TABLE_HD_INIT}" showRowCount="false"
+                                                smartFilterId="fin.gl.glview.display.smartfilterbar" enableAutoColumnWidth="true"
+                                                beforeRebindTable="onBeforeRebindTable" beforeExport="onBeforeExport"
+                                                afterVariantApply="onAfterApplyTableVariant" afterVariantSave="onAfterTableVariantSave"
+                                                persistencyKey="fin.gl.glview.display.LRF.STB">
+
+                              <!-- ********* TB - custom data ********* -->
+
+                              <smarttable:customData>
+                                   <core:CustomData id="fin.gl.glview.display.smarttable.cd.dateFormatSettings" key="dateFormatSettings" value='\{"UTC":true\}' />
+                              </smarttable:customData>
+
+                              <!-- ********* TB - layout data ********* -->
+
+                              <smarttable:layoutData>
+                                   <FlexItemData id="fin.gl.glview.display.smarttable.ld.growFactor" growFactor="1" baseSize="0%" />
+                              </smarttable:layoutData>
+
+                              <!-- ********* TB - smart links ********* -->
+
+                              <smarttable:semanticObjectController>
+                                   <navpopover:SemanticObjectController id="fin.gl.glview.display.smarttable.semObjController" beforePopoverOpens="onBeforePopoverOpens" navigationTargetsObtained="onNavTargetsObtained"
+                                                                        navigate="onPopoverLinkPressed" prefetchNavigationTargets="true" prefetchDone="onPrefetchNavTargets" />
+                              </smarttable:semanticObjectController>
+
+                              <!-- ********* TB - details button ****** -->
+
+                              <smarttable:customToolbar>
+                                   <OverflowToolbar id="fin.gl.glview.display.toolbar" design="Transparent" >
+                                        <ToolbarSpacer id="fin.gl.glview.display.table.toolbarspacer" />
+                                        <Button id="fin.gl.glview.display.tb.Details" text="{i18n>RDP_BUTTON}" tooltip="{i18n>RDP_BUTTON_TOOL_C}" press="cmd:Details" enabled="false" />
+                                   </OverflowToolbar>
+                              </smarttable:customToolbar>
+
+                              <!-- ********* TB - analytical table **** -->
+
+                              <table:AnalyticalTable id="fin.gl.glview.display.analyticaltable" threshold="100"
+                                                     visibleRowCountMode="Auto" showColumnVisibilityMenu="false"
+                                                     selectionMode="Single" enableBusyIndicator="false"
+                                                     rowSelectionChange="onRowSelectionChange">
+
+                                   <table:columns id="fin.gl.glview.display.analyticaltable.columns">
+
+                                   <!-- visible custom column; not part of service -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.Status"
+                                                           tooltip="{i18n>HD_STATUS}" hAlign="Center" width="80px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.Status.label" text="{i18n>HD_STATUS}" textAlign="Center" />
+                                        <table:template>
+                                             <core:Icon id="fin.gl.glview.display.analyticaltable.Status.icon"
+                                                        src="{parts:[{path:'AccountingDocument'}, {path:'IsOpenItemManaged'}, {path:'ClearingDate'}], formatter:'._formatIcon'}"
+                                                        tooltip="{parts:[{path:'AccountingDocument'}, {path:'IsOpenItemManaged'}, {path:'ClearingDate'}], formatter:'._formatIconTooltip'}"
+                                                        color="{parts:[{path:'AccountingDocument'}, {path:'IsOpenItemManaged'}, {path:'ClearingDate'}], formatter:'._formatIconColor'}"
+                                                        press="onPressRowDetailsPopover" decorative="false" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.Status.cd.p13n" key="p13nData" value='\{"columnKey": "fin.gl.glview.display.analyticaltable.Status"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- grouped inResult column, with smart link (BE) -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.CompanyCode"
+                                                           leadingProperty="CompanyCode" filterProperty="CompanyCode" sortProperty="CompanyCode"
+                                                           visible="true" inResult="true" width="150px" grouped="true">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.CompanyCode.label" text="{/#C_JournalEntryItemBrowserResult/CompanyCode/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.CompanyCode.SL" semanticObject="CompanyCode"
+                                                                   text="{parts:[{path:'CompanyCode'}, {path:'CompanyCodeName'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.CompanyCode.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.CompanyCode", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CompanyCode"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.CompanyCodeName"
+                                                           leadingProperty="CompanyCodeName" filterProperty="CompanyCodeName" sortProperty="CompanyCodeName"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for grouping text -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.CompanyCodeName.label" text="{/#C_JournalEntryItemBrowserResult/CompanyCodeName/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.CompanyCodeName.text" text="{CompanyCodeName}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.CompanyCodeName.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.CompanyCodeName", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- grouped inResult column, with smart link (BE) -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.GLAccount"
+                                                           leadingProperty="GLAccount" filterProperty="GLAccount" sortProperty="GLAccount"
+                                                           visible="true" inResult="true" width="150px" grouped="true">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.GLAccount.label" text="{/#C_JournalEntryItemBrowserResult/GLAccount/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.GLAccount.SL" semanticObject="GLAccount"
+                                                                   text="{parts:[{path:'GLAccount'}, {path:'GLAccountLongName'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.GLAccount.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.GLAccount", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/GLAccount"}' />
+                                             </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.GLAccountLongName"
+                                                           leadingProperty="GLAccountLongName" filterProperty="GLAccountLongName" sortProperty="GLAccountLongName"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for grouping text -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.GLAccountLongName.label" text="{/#C_JournalEntryItemBrowserResult/GLAccountLongName/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.GLAccountLongName.text" text="{GLAccountLongName}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.GLAccountLongName.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.GLAccountLongName", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ChartOfAccounts"
+                                                           leadingProperty="ChartOfAccounts" filterProperty="ChartOfAccounts" sortProperty="ChartOfAccounts"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.ChartOfAccounts.label" text="{/#C_JournalEntryItemBrowserResult/ChartOfAccounts/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.ChartOfAccounts.text" text="{ChartOfAccounts}"/>
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ChartOfAccounts.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ChartOfAccounts", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ChartOfAccounts"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AssignmentReference"
+                                                           leadingProperty="AssignmentReference" filterProperty="AssignmentReference" sortProperty="AssignmentReference"
+                                                           width="170px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.AssignmentReference.label" text="{/#C_JournalEntryItemBrowserResult/AssignmentReference/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.AssignmentReference.text" text="{AssignmentReference}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AssignmentReference.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AssignmentReference", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.FiscalYear"
+                                                           leadingProperty="FiscalYear" filterProperty="FiscalYear" sortProperty="FiscalYear"
+                                                           visible="false" inResult="true" width="90px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.FiscalYear.label" text="{/#C_JournalEntryItemBrowserResult/FiscalYear/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.FiscalYear.text" text="{FiscalYear}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.FiscalYear.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.FiscalYear", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AccountingDocument"
+                                                           leadingProperty="AccountingDocument" filterProperty="AccountingDocument" sortProperty="AccountingDocument"
+                                                           inResult="true" width="170px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.AccountingDocument.label" text="{/#C_JournalEntryItemBrowserResult/AccountingDocument/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.AccountingDocument.SL" semanticObject="AccountingDocument"
+                                                                   text="{AccountingDocument}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AccountingDocument.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AccountingDocument", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AccountingDocument"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AccountingDocumentItem"
+                                                           leadingProperty="AccountingDocumentItem" filterProperty="AccountingDocumentItem" sortProperty="AccountingDocumentItem"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentItem.label" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentItem/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentItem.text" text="{AccountingDocumentItem}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AccountingDocumentItem.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AccountingDocumentItem", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AccountingDocumentType"
+                                                           leadingProperty="AccountingDocumentType" filterProperty="AccountingDocumentType" sortProperty="AccountingDocumentType"
+                                                           width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentType.label" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentType/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentType.text" text="{AccountingDocumentType}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AccountingDocumentType.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AccountingDocumentType", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AccountingDocumentType"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AccountingDocumentCategory"
+                                                           leadingProperty="AccountingDocumentCategory" filterProperty="AccountingDocumentCategory" sortProperty="AccountingDocumentCategory"
+                                                           visible="false" inResult="true" width="130px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentCategory.label" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentCategory/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.AccountingDocumentCategory.text" text="{AccountingDocumentCategory}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AccountingDocumentCategory.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AccountingDocumentCategory", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AccountingDocumentCategory"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.PostingDate"
+                                                           leadingProperty="PostingDate" filterProperty="PostingDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="PostingDate" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.PostingDate.label" text="{/#C_JournalEntryItemBrowserResult/PostingDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.PostingDate.text" text="{path:'PostingDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.PostingDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.PostingDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.LedgerFiscalYear"
+                                                           leadingProperty="LedgerFiscalYear" filterProperty="LedgerFiscalYear" sortProperty="LedgerFiscalYear"
+                                                           visible="false" inResult="true" width="125px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.LedgerFiscalYear.label" text="{/#C_JournalEntryItemBrowserResult/LedgerFiscalYear/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.LedgerFiscalYear.text" text="{LedgerFiscalYear}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.LedgerFiscalYear.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.LedgerFiscalYear", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.FiscalPeriod"
+                                                           leadingProperty="FiscalPeriod" filterProperty="FiscalPeriod" sortProperty="FiscalPeriod"
+                                                           visible="false" inResult="true" width="100px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.FiscalPeriod.label" text="{/#C_JournalEntryItemBrowserResult/FiscalPeriod/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.FiscalPeriod.text" text="{FiscalPeriod}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.FiscalPeriod.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.FiscalPeriod", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.DocumentDate"
+                                                           leadingProperty="DocumentDate" filterProperty="DocumentDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="DocumentDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.DocumentDate.label" text="{/#C_JournalEntryItemBrowserResult/DocumentDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.DocumentDate.text" text="{path:'DocumentDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.DocumentDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.DocumentDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ExchangeRateDate"
+                                                           leadingProperty="ExchangeRateDate" filterProperty="ExchangeRateDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="ExchangeRateDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.ExchangeRateDate.label" text="{/#C_JournalEntryItemBrowserResult/ExchangeRateDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.ExchangeRateDate.text" text="{path:'ExchangeRateDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ExchangeRateDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ExchangeRateDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.CreationDate"
+                                                           leadingProperty="CreationDate" filterProperty="CreationDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="CreationDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.CreationDate.label" text="{/#C_JournalEntryItemBrowserResult/CreationDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.CreationDate.text" text="{path:'CreationDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.CreationDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.CreationDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AssetValueDate"
+                                                           leadingProperty="AssetValueDate" filterProperty="AssetValueDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="AssetValueDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.AssetValueDate.label" text="{/#C_JournalEntryItemBrowserResult/AssetValueDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.AssetValueDate.text" text="{path:'AssetValueDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AssetValueDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AssetValueDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.SettlementReferenceDate"
+                                                           leadingProperty="SettlementReferenceDate" filterProperty="SettlementReferenceDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="SettlementReferenceDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.SettlementReferenceDate.label" text="{/#C_JournalEntryItemBrowserResult/SettlementReferenceDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.SettlementReferenceDate.text" text="{path:'SettlementReferenceDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.SettlementReferenceDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.SettlementReferenceDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.NetDueDate"
+                                                           leadingProperty="NetDueDate" filterProperty="NetDueDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="NetDueDate" visible="false" width="125px" hAlign="End">
+                                        <Label id="fin.gl.glview.display.analyticaltable.NetDueDate.label" text="{/#C_JournalEntryItemBrowserResult/NetDueDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.NetDueDate.text" text="{path:'NetDueDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.NetDueDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.NetDueDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.PostingKey"
+                                                           leadingProperty="PostingKey" filterProperty="PostingKey" sortProperty="PostingKey"
+                                                           width="100px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.PostingKey.label" text="{/#C_JournalEntryItemBrowserResult/PostingKey/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.PostingKey.text" text="{PostingKey}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.PostingKey.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.PostingKey", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/PostingKey"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible summed column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AmountInCompanyCodeCurrency"
+                                                           leadingProperty="AmountInCompanyCodeCurrency" filterProperty="AmountInCompanyCodeCurrency" sortProperty="AmountInCompanyCodeCurrency"
+                                                           summed="true" width="200px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.AmountInCompanyCodeCurrency.label" text="{/#C_JournalEntryItemBrowserResult/AmountInCompanyCodeCurrency/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <currency:Currency id="fin.gl.glview.display.analyticaltable.AmountInCompanyCodeCurrency.Curr" stringValue="{path:'AmountInCompanyCodeCurrency'}"
+                                                                currency="{CompanyCodeCurrency}" maxPrecision="{path:'CompanyCodeCurrency', formatter:'._formatScale'}" useSymbol="false" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.AmountInCompanyCodeCurrency.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AmountInCompanyCodeCurrency", "type": "numeric", "precision": "24", "scale": "5", "edmType": "Edm.Decimal", "unit": "CompanyCodeCurrency", "isCurrency": true, "additionalProperty": "CompanyCodeCurrency"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible 'old' inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.CompanyCodeCurrency"
+                                                           leadingProperty="CompanyCodeCurrency" filterProperty="CompanyCodeCurrency" sortProperty="CompanyCodeCurrency"
+                                                           visible="false" width="150px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.CompanyCodeCurrency.label" text="{/#C_JournalEntryItemBrowserResult/CompanyCodeCurrency/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.CompanyCodeCurrency.text" text="{CompanyCodeCurrency}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.CompanyCodeCurrency.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.CompanyCodeCurrency", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.TaxCode"
+                                                           leadingProperty="TaxCode" filterProperty="TaxCode" sortProperty="TaxCode"
+                                                           width="90px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.TaxCode.label" text="{/#C_JournalEntryItemBrowserResult/TaxCode/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.TaxCode.text" text="{TaxCode}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.TaxCode.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.TaxCode", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/TaxCode"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ClearingAccountingDocument"
+                                                           leadingProperty="ClearingAccountingDocument" filterProperty="ClearingAccountingDocument" sortProperty="ClearingAccountingDocument"
+                                                           inResult="true" width="170px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.ClearingAccountingDocument.label" text="{/#C_JournalEntryItemBrowserResult/ClearingAccountingDocument/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.ClearingAccountingDocument.SL" semanticObject="AccountingDocument"
+                                                                   text="{ClearingAccountingDocument}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ClearingAccountingDocument.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ClearingAccountingDocument", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>	
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ProfitCenter"
+                                                           leadingProperty="ProfitCenter" filterProperty="ProfitCenter" sortProperty="ProfitCenter"
+                                                           width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.ProfitCenter.label" text="{/#C_JournalEntryItemBrowserResult/ProfitCenter/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.ProfitCenter.SL" semanticObject="ProfitCenter"
+                                                                   text="{parts:[{path:'ProfitCenter'}, {path:'ProfitCenter_Text'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ProfitCenter.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ProfitCenter", "type": "string", "edmType": "Edm.String", "additionalProperty": "ProfitCenter_Text", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ProfitCenter"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.Segment"
+                                                           leadingProperty="Segment" filterProperty="Segment" sortProperty="Segment"
+                                                           width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.Segment.label" text="{/#C_JournalEntryItemBrowserResult/Segment/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.Segment.text" text="{parts:[{path:'Segment'}, {path:'Segment_Text'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.Segment.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.Segment", "type": "string", "edmType": "Edm.String", "additionalProperty": "Segment_Text", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/Segment"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.DocumentItemText"
+                                                           leadingProperty="DocumentItemText" filterProperty="DocumentItemText" sortProperty="DocumentItemText"
+                                                           width="170px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.DocumentItemText.label" text="{/#C_JournalEntryItemBrowserResult/DocumentItemText/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.DocumentItemText.text" text="{DocumentItemText}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.DocumentItemText.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.DocumentItemText", "type": "string", "edmType": "Edm.String"}' />
+                                             </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.LedgerGLLineItem"
+                                                           leadingProperty="LedgerGLLineItem" filterProperty="LedgerGLLineItem" sortProperty="LedgerGLLineItem"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.LedgerGLLineItem.label" text="{/#C_JournalEntryItemBrowserResult/LedgerGLLineItem/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.LedgerGLLineItem.text" text="{LedgerGLLineItem}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.LedgerGLLineItem.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.LedgerGLLineItem", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ControllingArea"
+                                                           leadingProperty="ControllingArea" filterProperty="ControllingArea" sortProperty="ControllingArea"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.ControllingArea.label" text="{/#C_JournalEntryItemBrowserResult/ControllingArea/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.ControllingArea.SL" semanticObject="ControllingArea"
+                                                                   text="{parts:[{path:'ControllingArea'}, {path:'ControllingArea_Text'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ControllingArea.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ControllingArea", "type": "string", "edmType": "Edm.String", "additionalProperty": "ControllingArea_Text", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ControllingArea"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible column !changed! -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.IsCleared"
+                                                           leadingProperty="IsCleared" filterProperty="IsCleared" sortProperty="IsCleared"
+                                                           visible="false" width="90px">
+                                                           <!-- was inResult for status calculation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.IsCleared.label" text="{/#C_JournalEntryItemBrowserResult/IsCleared/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.IsCleared.text" text="{IsCleared}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.IsCleared.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.IsCleared", "edmType": "Edm.Boolean"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult & navigation date format column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ClearingDate"
+                                                           leadingProperty="ClearingDate" filterProperty="ClearingDate"
+                                                           filterType="\{type:'sap.ui.model.type.Date', formatOptions:\{UTC: true\}\}"
+                                                           sortProperty="ClearingDate" visible="false" inResult="true" width="125px" hAlign="End">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.ClearingDate.label" text="{/#C_JournalEntryItemBrowserResult/ClearingDate/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.ClearingDate.text" text="{path:'ClearingDate', formatter:'._formatDate'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ClearingDate.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ClearingDate", "type": "date"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.ClearingDocFiscalYear"
+                                                           leadingProperty="ClearingDocFiscalYear" filterProperty="ClearingDocFiscalYear" sortProperty="ClearingDocFiscalYear"
+                                                           visible="false" inResult="true" width="150px">
+                                                           <!-- inResult for navigation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.ClearingDocFiscalYear.label" text="{/#C_JournalEntryItemBrowserResult/ClearingDocFiscalYear/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.ClearingDocFiscalYear.SL" semanticObject="AccountingDocument"
+                                                                   text="{ClearingDocFiscalYear}" mapFieldToSemanticObject="false" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.ClearingDocFiscalYear.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.ClearingDocFiscalYear", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.IsOpenItemManaged"
+                                                           leadingProperty="IsOpenItemManaged" filterProperty="IsOpenItemManaged" sortProperty="IsOpenItemManaged"
+                                                           visible="false" inResult="true" width="125px">
+                                                           <!-- inResult for status calculation -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.IsOpenItemManaged.label" text="{/#C_JournalEntryItemBrowserResult/IsOpenItemManaged/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.IsOpenItemManaged.text" text="{IsOpenItemManaged}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.IsOpenItemManaged.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.IsOpenItemManaged", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible & non-filterable inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.Ledger"
+                                                           leadingProperty="Ledger"
+                                                           visible="false" inResult="true" width="90px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.Ledger.label" text="{/#C_JournalEntryItemBrowserResult/Ledger/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.Ledger.text" text="{parts:[{path:'Ledger'}, {path:'Ledger_Text'}], formatter:'._formatIDTEXT'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.Ledger.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.Ledger", "type": "string", "edmType": "Edm.String", "additionalProperty": "Ledger_Text"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.SourceLedger"
+                                                           leadingProperty="SourceLedger" filterProperty="SourceLedger" sortProperty="SourceLedger"
+                                                           visible="false" inResult="true" width="90px">
+                                                           <!-- inResult for key -->
+                                        <Label id="fin.gl.glview.display.analyticaltable.SourceLedger.label" text="{/#C_JournalEntryItemBrowserResult/SourceLedger/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.SourceLedger.text" text="{SourceLedger}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.SourceLedger.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.SourceLedger", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible navigation column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.AccountingDocCreatedByUser"
+                                                           leadingProperty="AccountingDocCreatedByUser" filterProperty="AccountingDocCreatedByUser" sortProperty="AccountingDocCreatedByUser"
+                                                           visible="false" width="150px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.AccountingDocCreatedByUser.label" text="{/#C_JournalEntryItemBrowserResult/AccountingDocCreatedByUser/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.AccountingDocCreatedByUser.SL" semanticObject="Employee"
+                                                                   text="{AccountingDocCreatedByUser}" contactAnnotationPath="to_UserContactCard" />
+                                        </table:template>
+                                        <table:customData>
+                                        <core:CustomData id="fin.gl.glview.display.analyticaltable.AccountingDocCreatedByUser.cd.p13n" key="p13nData"
+                                                         value='\{"columnKey": "fin.gl.glview.display.analyticaltable.AccountingDocCreatedByUser", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible navigation column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.OrderID"
+                                                           leadingProperty="OrderID" filterProperty="OrderID" sortProperty="OrderID"
+                                                           visible="false" width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.OrderID.label" text="{/#C_JournalEntryItemBrowserResult/OrderID/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.OrderID.SL" text="{OrderID}"
+                                                                   semanticObject="Order"
+                                                                   additionalSemanticObjects="{path:'OrderCategory', formatter:'._formatOrderTargets'}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.OrderID.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.OrderID", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/OrderID"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible possible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.OrderCategory"
+                                                           leadingProperty="OrderCategory" filterProperty="OrderCategory" sortProperty="OrderCategory"
+                                                           visible="false" width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.OrderCategory.label" text="{/#C_JournalEntryItemBrowserResult/OrderCategory/@sap:label}" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.OrderCategory.text" text="{OrderCategory}" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.OrderCategory.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.OrderCategory", "type": "string", "edmType": "Edm.String", "fullName": "FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/OrderCategory"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible possible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.MasterFixedAsset"
+                                                           leadingProperty="MasterFixedAsset" filterProperty="MasterFixedAsset" sortProperty="MasterFixedAsset"
+                                                           visible="false" width="150px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.MasterFixedAsset.label" text="{/#C_JournalEntryItemBrowserResult/MasterFixedAsset/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.MasterFixedAsset.SL" semanticObject="FixedAsset"
+                                                                   text="{parts:[{path:'MasterFixedAsset'}, {path:'FixedAsset'}], formatter:'._formatAsset'}"
+                                                                   mapFieldToSemanticObject="false" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.MasterFixedAsset.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.MasterFixedAsset", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- invisible possible inResult column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.FixedAsset"
+                                                           leadingProperty="FixedAsset" filterProperty="FixedAsset" sortProperty="FixedAsset"
+                                                           visible="false" width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.FixedAsset.label" text="{/#C_JournalEntryItemBrowserResult/FixedAsset/@sap:label}" />
+                                        <table:template>
+                                             <navpopover:SmartLink id="fin.gl.glview.display.analyticaltable.FixedAsset.SL" semanticObject="FixedAsset"
+                                                                   text="{FixedAsset}" mapFieldToSemanticObject="false" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.FixedAsset.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.FixedAsset", "type": "string", "edmType": "Edm.String"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   <!-- visible & non-filterable summed column -->
+                                   <table:AnalyticalColumn id="fin.gl.glview.display.analyticaltable.NumberOfItems"
+                                                           leadingProperty="NumberOfItems" summed="true" width="125px">
+                                        <Label id="fin.gl.glview.display.analyticaltable.NumberOfItems.label" text="{/#C_JournalEntryItemBrowserResult/NumberOfItems/@sap:label}" textAlign="End" />
+                                        <table:template>
+                                             <Label id="fin.gl.glview.display.analyticaltable.NumberOfItems.text" text="{path:'NumberOfItems', formatter:'._formatNoI'}" textAlign="End" />
+                                        </table:template>
+                                        <table:customData>
+                                             <core:CustomData id="fin.gl.glview.display.analyticaltable.NumberOfItems.cd.p13n" key="p13nData"
+                                                              value='\{"columnKey": "fin.gl.glview.display.analyticaltable.NumberOfItems", "type": "numeric", "edmType": "Edm.Decimal"}' />
+                                        </table:customData>
+                                   </table:AnalyticalColumn>
+
+                                   </table:columns>
+
+                              </table:AnalyticalTable>
+
+                         </smarttable:SmartTable>
+
+                    </f:content>
+
+                    <f:footer>
+                         <OverflowToolbar id="fin.gl.glview.display.footer.overflowtoolbar">
+                              <Button id="fin.gl.glview.display.footer.button.alert" icon="sap-icon://alert" text="{page>/numberOfMessages}"
+                                      type="Emphasized" visible="{= ${page>/numberOfMessages} > 0 }" press="onMessagePopoverPressed" />
+                         </OverflowToolbar>
+                    </f:footer>
+
+               </f:DynamicPage>
+          </App>
+</mvc:View>

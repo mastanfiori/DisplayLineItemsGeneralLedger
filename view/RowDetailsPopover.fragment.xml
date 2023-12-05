@@ -1,0 +1,1210 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition id="fin.gl.glview.display.RowDetailsFragment"
+                         xmlns:core="sap.ui.core"
+                         xmlns="sap.m"
+                         xmlns:l="sap.ui.layout"
+	                     xmlns:f="sap.ui.layout.form"
+	                     xmlns:currency="sap.ui.unified"
+	                     xmlns:target="sap.ui.comp.navpopover">
+     <Popover id="fin.gl.glview.display.RowDetailsPopover"
+              title="{i18n>RDP_HEADER}"
+              class="sapUiPopupWithPadding"
+              placement="Right"
+              contentWidth="500px"
+              contentHeight="500px">
+          <Label id="fin.gl.glview.display.rdp.Section.Title" text="{i18n>RDP_HEADER}" visible="false" />
+          <Panel id="fin.gl.glview.display.rdp.Panel1" headerText="{i18n>RDP_BASIC}" expandable="true" expanded="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section1"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">         
+               <f:content>
+                    <!-- Ledger -->
+                    <Label id="fin.gl.glview.display.rdp.LedgerLabel"
+                           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Ledger/@sap:label}"
+                           tooltip="{/#C_JournalEntryItemBrowserResult/Ledger/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.LedgerText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Ledger" text="{RowDetails>/Ledger}" mapFieldToSemanticObject="false" />
+					<!-- Ledger Name -->
+					<Label id="fin.gl.glview.display.rdp.LedgerNameLabel"
+					       design="Bold" text="{/#C_JournalEntryItemBrowserResult/Ledger_Text/@sap:label}"
+                           tooltip="{/#C_JournalEntryItemBrowserResult/Ledger_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.LedgerNameText" text="{RowDetails>/Ledger_Text}" />
+					<!-- Company Code -->
+                    <Label id="fin.gl.glview.display.rdp.CompanyCodeLabel"
+                           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CompanyCode/@sap:label}"
+                           tooltip="{/#C_JournalEntryItemBrowserResult/CompanyCode/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.CompanyCodeText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="CompanyCode" text="{RowDetails>/CompanyCode}" mapFieldToSemanticObject="false" />
+					<!-- Company Code Name -->
+					<Label id="fin.gl.glview.display.rdp.CompanyCodeNameLabel"
+					       design="Bold" text="{/#C_JournalEntryItemBrowserResult/CompanyCodeName/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CompanyCodeName/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CompanyCodeNameText" text="{RowDetails>/CompanyCodeName}" />
+					<!-- G/L Account -->
+				    <Label id="fin.gl.glview.display.rdp.GLAccountLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GLAccount/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GLAccount/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.GLAccountText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="GLAccount" text="{RowDetails>/GLAccount}" mapFieldToSemanticObject="false" />
+					<!-- G/L Account Name -->
+				    <Label id="fin.gl.glview.display.rdp.GLAccountNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GLAccountLongName/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GLAccountLongName/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.GLAccountNameText" text="{RowDetails>/GLAccountLongName}" />
+					<!-- Ledger Fiscal Year -->
+				    <Label id="fin.gl.glview.display.rdp.LedgerFiscalYearLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/LedgerFiscalYear/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/LedgerFiscalYear/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.LedgerFiscalYearText" text="{RowDetails>/LedgerFiscalYear}" />
+					<!-- Fiscal Period -->
+				    <Label id="fin.gl.glview.display.rdp.FiscalPeriodLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FiscalPeriod/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FiscalPeriod/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FiscalPeriodText" text="{RowDetails>/FiscalPeriod}" />
+					<!-- Posting Date -->
+					<Label id="fin.gl.glview.display.rdp.PostingDateLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PostingDate/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PostingDate/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PostingDateText" text="{path:'RowDetails>/PostingDate', formatter:'._formatDate'}" />
+					<!-- Journal Entry -->
+				    <Label id="fin.gl.glview.display.rdp.AccountingDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocument/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.AccountingDocumentText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="AccountingDocument" text="{RowDetails>/AccountingDocument}" mapFieldToSemanticObject="false" />
+					<!-- DOCLN -->
+				    <Label id="fin.gl.glview.display.rdp.LedgerGLLineItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/LedgerGLLineItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/LedgerGLLineItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.LedgerGLLineItemText" text="{RowDetails>/LedgerGLLineItem}" />
+					<!-- BUZEI -->
+				    <Label id="fin.gl.glview.display.rdp.AccountingDocumentItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocumentItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountingDocumentItemText" text="{RowDetails>/AccountingDocumentItem}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel2" headerText="{i18n>FILTERS_GROUP_1}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section2"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Chart of Accounts -->
+				    <Label id="fin.gl.glview.display.rdp.ChartOfAccountsLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ChartOfAccounts/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ChartOfAccounts/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.ChartOfAccountsText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="ChartOfAccounts" text="{RowDetails>/ChartOfAccounts}" mapFieldToSemanticObject="false" />
+					<!-- Country Chart of Accounts -->
+					<Label id="fin.gl.glview.display.rdp.CountryChartOfAccountsLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CountryChartOfAccounts/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CountryChartOfAccounts/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.CountryChartOfAccountsText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="ChartOfAccounts" text="{RowDetails>/CountryChartOfAccounts}" mapFieldToSemanticObject="false" />
+					<!-- Profit Center -->
+				    <Label id="fin.gl.glview.display.rdp.ProfitCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ProfitCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ProfitCenter/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.ProfitCenterText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="ProfitCenter" text="{RowDetails>/ProfitCenter}" mapFieldToSemanticObject="false" />
+					<!-- Profit Center Name -->
+				    <Label id="fin.gl.glview.display.rdp.ProfitCenterNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ProfitCenter_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ProfitCenter_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ProfitCenterNameText" text="{RowDetails>/ProfitCenter_Text}" />
+					<!-- Functional Area -->
+					<Label id="fin.gl.glview.display.rdp.FunctionalAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FunctionalArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FunctionalArea/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.FunctionalAreaText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="FunctionalArea" text="{RowDetails>/FunctionalArea}" mapFieldToSemanticObject="false" />
+					<!-- Functional Area Name -->
+				    <Label id="fin.gl.glview.display.rdp.FunctionalAreaNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FunctionalArea_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FunctionalArea_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FunctionalAreaNameText" text="{RowDetails>/FunctionalArea_Text}" />
+					<!-- Business Area -->
+					<Label id="fin.gl.glview.display.rdp.BusinessAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/BusinessArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/BusinessArea/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.BusinessAreaText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="BusinessArea" text="{RowDetails>/BusinessArea}" mapFieldToSemanticObject="false" />
+					<!-- Business Area Name -->
+				    <Label id="fin.gl.glview.display.rdp.BusinessAreaNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/BusinessArea_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/BusinessArea_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.BusinessAreaNameText" text="{RowDetails>/BusinessArea_Text}" />
+					<!-- Segment -->
+					<Label id="fin.gl.glview.display.rdp.SegmentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Segment/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Segment/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.SegmentText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Segment" text="{RowDetails>/Segment}" mapFieldToSemanticObject="false" />
+					<!-- Segment Name -->
+				    <Label id="fin.gl.glview.display.rdp.SegmentNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Segment_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Segment_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SegmentNameText" text="{RowDetails>/Segment_Text}" />
+					<!-- G/L Account Type -->
+					<Label id="fin.gl.glview.display.rdp.GLAccountTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GLAccountType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GLAccountType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.GLAccountTypeText" text="{RowDetails>/GLAccountType}" />
+					<!-- Financial Account Type -->
+			    	<Label id="fin.gl.glview.display.rdp.FinancialAccountTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FinancialAccountType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FinancialAccountType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FinancialAccountTypeText" text="{RowDetails>/FinancialAccountType}" />
+					<!-- Alternative G/L Account -->
+					<Label id="fin.gl.glview.display.rdp.AlternativeGLAccountLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AlternativeGLAccount/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AlternativeGLAccount/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.AlternativeGLAccountText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="GLAccount" text="{RowDetails>/AlternativeGLAccount}" mapFieldToSemanticObject="false" />
+					<!-- Offsetting Account -->
+					<Label id="fin.gl.glview.display.rdp.OffsettingAccountLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OffsettingAccount/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OffsettingAccount/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.OffsettingAccountText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="GLAccount" text="{RowDetails>/OffsettingAccount}" mapFieldToSemanticObject="false" />
+					<!-- Offsetting Account Type -->
+					<Label id="fin.gl.glview.display.rdp.OffsettingAccountTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OffsettingAccountType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OffsettingAccountType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OffsettingAccountTypeText" text="{RowDetails>/OffsettingAccountType}" />
+					<!-- Account Assignment -->
+					<Label id="fin.gl.glview.display.rdp.AccountAssignmentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountAssignment/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountAssignment/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountAssignmentText" text="{RowDetails>/AccountAssignment}" />
+					<!-- Account Assignment Type -->
+					<Label id="fin.gl.glview.display.rdp.AccountAssignmentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountAssignmentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountAssignmentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountAssignmentTypeText" text="{RowDetails>/AccountAssignmentType}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel3" headerText="{i18n>FILTERS_GROUP_13}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section3"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Logical System -->
+					<Label id="fin.gl.glview.display.rdp.LogicalSystemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/LogicalSystem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/LogicalSystem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.LogicalSystemText" text="{RowDetails>/LogicalSystem}" />
+					<!-- Is Reversal -->
+					<Label id="fin.gl.glview.display.rdp.IsReversalLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/IsReversal/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/IsReversal/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.IsReversalText" text="{RowDetails>/IsReversal}" />
+					<!-- Is Reversed -->
+					<Label id="fin.gl.glview.display.rdp.IsReversedLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/IsReversed/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/IsReversed/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.IsReversedText" text="{RowDetails>/IsReversed}" />
+					<!-- Reversal Reference Document -->
+					<Label id="fin.gl.glview.display.rdp.ReversalReferenceDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReversalReferenceDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReversalReferenceDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReversalReferenceDocumentText" text="{RowDetails>/ReversalReferenceDocument}" />
+					<!-- Reversal Reference Document Context -->
+					<Label id="fin.gl.glview.display.rdp.ReversalReferenceDocumentCntxtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReversalReferenceDocumentCntxt/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReversalReferenceDocumentCntxt/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReversalReferenceDocumentCntxtText" text="{RowDetails>/ReversalReferenceDocumentCntxt}" />
+					<!-- Is Settlement -->
+					<Label id="fin.gl.glview.display.rdp.IsSettlementLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/IsSettlement/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/IsSettlement/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.IsSettlementText" text="{RowDetails>/IsSettlement}" />
+					<!-- Is Settled -->
+					<Label id="fin.gl.glview.display.rdp.IsSettledLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/IsSettled/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/IsSettled/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.IsSettledText" text="{RowDetails>/IsSettled}" />
+					<!-- Accounting Document created by User -->
+					<Label id="fin.gl.glview.display.rdp.AccountingDocCreatedByUserLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocCreatedByUser/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocCreatedByUser/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.AccountingDocCreatedByUserText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Employee" text="{RowDetails>/AccountingDocCreatedByUser}" 
+					                  semanticObjectLabel="{/#C_JournalEntryItemBrowserResult/AccountingDocCreatedByUser/@sap:label}" 
+					                  contactAnnotationPath="to_UserContactCard" />
+					<!-- Creation Date -->
+					<Label id="fin.gl.glview.display.rdp.CreationDateLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreationDate/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreationDate/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CreationDateText" text="{path:'RowDetails>/CreationDate', formatter:'._formatDate'}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel4" headerText="{i18n>FILTERS_GROUP_2}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section4"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Debit Amount in Balance Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInBalanceTransCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInBalanceTransCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInBalanceTransCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInBalanceTransCrcyText" value="{parts:[{path:'RowDetails>/DebitAmountInBalanceTransCrcy'},
+					{path:'RowDetails>/BalanceTransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/BalanceTransactionCurrency}" useSymbol="false" />
+					<!-- Credit Amount in Balance Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInBalanceTransCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInBalanceTransCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInBalanceTransCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInBalanceTransCrcyText" value="{parts:[{path:'RowDetails>/CreditAmountInBalanceTransCrcy'},
+					{path:'RowDetails>/BalanceTransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/BalanceTransactionCurrency}" useSymbol="false" />
+					<!-- Amount in Balance Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.AmountInBalanceTransacCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInBalanceTransacCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInBalanceTransacCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInBalanceTransacCrcyText" value="{parts:[{path:'RowDetails>/AmountInBalanceTransacCrcy'},
+					{path:'RowDetails>/BalanceTransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/BalanceTransactionCurrency}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel1" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText1" text="" />
+					<!-- Debit Amount in Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInTransCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInTransCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInTransCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInTransCrcyText" value="{parts:[{path:'RowDetails>/DebitAmountInTransCrcy'},
+					{path:'RowDetails>/TransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/TransactionCurrency}" useSymbol="false" />
+					<!-- Credit Amount in Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInTransCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInTransCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInTransCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInTransCrcyText" value="{parts:[{path:'RowDetails>/CreditAmountInTransCrcy'},
+					{path:'RowDetails>/TransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/TransactionCurrency}" useSymbol="false" />
+					<!-- Amount in Transaction Currency -->
+					<Label id="fin.gl.glview.display.rdp.AmountInTransactionCurrencyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInTransactionCurrency/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInTransactionCurrency/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInTransactionCurrencyText" value="{parts:[{path:'RowDetails>/AmountInTransactionCurrency'},
+					{path:'RowDetails>/TransactionCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/TransactionCurrency}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel2" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText2" text="" />
+					<!-- Debit Amount in Company Code Currency -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInCoCodeCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInCoCodeCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInCoCodeCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInCoCodeCrcyText" value="{parts:[{path:'RowDetails>/DebitAmountInCoCodeCrcy'},
+					{path:'RowDetails>/CompanyCodeCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/CompanyCodeCurrency}" useSymbol="false" />
+					<!-- Credit Amount in Company Code Currency -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInCoCodeCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInCoCodeCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInCoCodeCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInCoCodeCrcyText" value="{parts:[{path:'RowDetails>/CreditAmountInCoCodeCrcy'},
+					{path:'RowDetails>/CompanyCodeCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/CompanyCodeCurrency}" useSymbol="false" />
+					<!-- Amount in Company Code Currency -->
+					<Label id="fin.gl.glview.display.rdp.AmountInCompanyCodeCurrencyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInCompanyCodeCurrency/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInCompanyCodeCurrency/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInCompanyCodeCurrencyText" value="{parts:[{path:'RowDetails>/AmountInCompanyCodeCurrency'},
+					{path:'RowDetails>/CompanyCodeCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/CompanyCodeCurrency}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel3" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText3" text="" />
+					<!-- Debit Amount in Global Currency -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInGlobalCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInGlobalCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInGlobalCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInGlobalCrcyText" value="{parts:[{path:'RowDetails>/DebitAmountInGlobalCrcy'},
+					{path:'RowDetails>/GlobalCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/GlobalCurrency}" useSymbol="false" />
+					<!-- Credit Amount in Global Currency -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInGlobalCrcyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInGlobalCrcy/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInGlobalCrcy/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInGlobalCrcyText" value="{parts:[{path:'RowDetails>/CreditAmountInGlobalCrcy'},
+					{path:'RowDetails>/GlobalCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/GlobalCurrency}" useSymbol="false" />
+					<!-- Amount in Global Currency -->
+					<Label id="fin.gl.glview.display.rdp.AmountInGlobalCurrencyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInGlobalCurrency/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInGlobalCurrency/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInGlobalCurrencyText" value="{parts:[{path:'RowDetails>/AmountInGlobalCurrency'},
+					{path:'RowDetails>/GlobalCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/GlobalCurrency}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel4" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText4" text="" />
+					<!-- Amount in Object Currency -->
+					<Label id="fin.gl.glview.display.rdp.AmountInObjectCurrencyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInObjectCurrency/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInObjectCurrency/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInObjectCurrencyText" value="{parts:[{path:'RowDetails>/AmountInObjectCurrency'},
+					{path:'RowDetails>/ObjectCurrency'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/ObjectCurrency}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel5" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText5" text="" />
+					<!-- Quantity in Base Unit -->
+					<Label id="fin.gl.glview.display.rdp.QuantityLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Quantity/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Quantity/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.QuantityText" value="{parts:[{path:'RowDetails>/Quantity'},
+					{path:'RowDetails>/BaseUnit'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/BaseUnit}" useSymbol="false" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel5" headerText="{i18n>FILTERS_GROUP_3}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section5"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Debit Amount in Free Defined Currency 1 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy1Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy1/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy1/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy1Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy1'},
+					{path:'RowDetails>/FreeDefinedCurrency1'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency1}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 1 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy1Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy1/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy1/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy1Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy1'},
+					{path:'RowDetails>/FreeDefinedCurrency1'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency1}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 1 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency1Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency1/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency1/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency1Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency1'},
+					{path:'RowDetails>/FreeDefinedCurrency1'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency1}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel6" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText6" text="" />
+					<!-- Debit Amount in Free Defined Currency 2 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy2Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy2/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy2/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy2Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy2'},
+					{path:'RowDetails>/FreeDefinedCurrency2'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency2}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 2 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy2Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy2/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy2/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy2Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy2'},
+					{path:'RowDetails>/FreeDefinedCurrency2'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency2}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 2 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency2Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency2/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency2/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency2Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency2'},
+					{path:'RowDetails>/FreeDefinedCurrency2'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency2}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel7" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText7" text="" />
+					<!-- Debit Amount in Free Defined Currency 3 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy3Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy3/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy3/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy3Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy3'},
+					{path:'RowDetails>/FreeDefinedCurrency3'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency3}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 3 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy3Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy3/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy3/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy3Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy3'},
+					{path:'RowDetails>/FreeDefinedCurrency3'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency3}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 3 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency3Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency3/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency3/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency3Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency3'},
+					{path:'RowDetails>/FreeDefinedCurrency3'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency3}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel8" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText8" text="" />
+					<!-- Debit Amount in Free Defined Currency 4 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy4Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy4/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy4/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy4Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy4'},
+					{path:'RowDetails>/FreeDefinedCurrency4'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency4}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 4 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy4Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy4/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy4/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy4Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy4'},
+					{path:'RowDetails>/FreeDefinedCurrency4'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency4}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 4 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency4Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency4/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency4/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency4Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency4'},
+					{path:'RowDetails>/FreeDefinedCurrency4'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency4}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel9" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText9" text="" />
+					<!-- Debit Amount in Free Defined Currency 5 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy5Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy5/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy5/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy5Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy5'},
+					{path:'RowDetails>/FreeDefinedCurrency5'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency5}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 5 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy5Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy5/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy5/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy5Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy5'},
+					{path:'RowDetails>/FreeDefinedCurrency5'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency5}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 5 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency5Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency5/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency5/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency5Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency5'},
+					{path:'RowDetails>/FreeDefinedCurrency5'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency5}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel10" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText10" text="" />
+					<!-- Debit Amount in Free Defined Currency 6 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy6Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy6/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy6/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy6Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy6'},
+					{path:'RowDetails>/FreeDefinedCurrency6'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency6}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 6 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy6Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy6/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy6/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy6Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy6'},
+					{path:'RowDetails>/FreeDefinedCurrency6'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency6}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 6 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency6Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency6/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency6/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency6Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency6'},
+					{path:'RowDetails>/FreeDefinedCurrency6'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency6}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel11" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText11" text="" />
+					<!-- Debit Amount in Free Defined Currency 7 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy7Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy7/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy7/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy7Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy7'},
+					{path:'RowDetails>/FreeDefinedCurrency7'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency7}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 7 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy7Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy7/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy7/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy7Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy7'},
+					{path:'RowDetails>/FreeDefinedCurrency7'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency7}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 7 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency7Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency7/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency7/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency7Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency7'},
+					{path:'RowDetails>/FreeDefinedCurrency7'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency7}" useSymbol="false" />
+					<Label id="fin.gl.glview.display.rdp.CurrencySpacerLabel12" text="" /><Text id="fin.gl.glview.display.rdp.CurrencySpacerText12" text="" />
+					<!-- Debit Amount in Free Defined Currency 8 -->
+					<Label id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy8Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy8/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitAmountInFreeDefinedCrcy8/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.DebitAmountInFreeDefinedCrcy8Text" value="{parts:[{path:'RowDetails>/DebitAmountInFreeDefinedCrcy8'},
+					{path:'RowDetails>/FreeDefinedCurrency8'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency8}" useSymbol="false" />
+					<!-- Credit Amount in Free Defined Currency 8 -->
+					<Label id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy8Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy8/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CreditAmountInFreeDefinedCrcy8/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.CreditAmountInFreeDefinedCrcy8Text" value="{parts:[{path:'RowDetails>/CreditAmountInFreeDefinedCrcy8'},
+					{path:'RowDetails>/FreeDefinedCurrency8'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency8}" useSymbol="false" />
+					<!-- Amount in Free Defined Currency 8 -->
+					<Label id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency8Label"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency8/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AmountInFreeDefinedCurrency8/@sap:quickinfo}" />
+					<currency:Currency id="fin.gl.glview.display.rdp.AmountInFreeDefinedCurrency8Text" value="{parts:[{path:'RowDetails>/AmountInFreeDefinedCurrency8'},
+					{path:'RowDetails>/FreeDefinedCurrency8'}], formatter:'fin.gl.glview.display.util.Formatter.formatAmount'}" currency="{RowDetails>/FreeDefinedCurrency8}" useSymbol="false" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel6" headerText="{i18n>FILTERS_GROUP_4}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section6"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Master Fixed Asset -->
+					<Label id="fin.gl.glview.display.rdp.MasterFixedAssetLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/MasterFixedAsset/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/MasterFixedAsset/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.MasterFixedAssetText" text="{RowDetails>/MasterFixedAsset}" />
+					<!-- Fixed Asset -->
+					<Label id="fin.gl.glview.display.rdp.FixedAssetLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FixedAsset/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FixedAsset/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.FixedAssetText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="FixedAsset" text="{RowDetails>/FixedAsset}" mapFieldToSemanticObject="false" />
+					<!-- Asset Transaction Type -->
+					<Label id="fin.gl.glview.display.rdp.AssetTransactionTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AssetTransactionType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AssetTransactionType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AssetTransactionTypeText" text="{RowDetails>/AssetTransactionType}" />
+					<!-- Group Master Fixed Asset -->
+					<Label id="fin.gl.glview.display.rdp.GroupMasterFixedAssetLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GroupMasterFixedAsset/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GroupMasterFixedAsset/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.GroupMasterFixedAssetText" text="{RowDetails>/GroupMasterFixedAsset}" />
+					<!-- Group Fixed Asset -->
+					<Label id="fin.gl.glview.display.rdp.GroupFixedAssetLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GroupFixedAsset/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GroupFixedAsset/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.GroupFixedAssetText" text="{RowDetails>/GroupFixedAsset}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel7" headerText="{i18n>FILTERS_GROUP_5}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section7"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Controlling Area -->
+					<Label id="fin.gl.glview.display.rdp.ControllingAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ControllingArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ControllingArea/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.ControllingAreaText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="ControllingArea" text="{RowDetails>/ControllingArea}" mapFieldToSemanticObject="false" />
+					<!-- Controlling Area Name -->
+					<Label id="fin.gl.glview.display.rdp.ControllingAreaNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ControllingArea_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ControllingArea_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ControllingAreaNameText" text="{RowDetails>/ControllingArea_Text}" />
+					<!-- Cost Center -->
+					<Label id="fin.gl.glview.display.rdp.CostCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostCenter/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.CostCenterText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="CostCenter" text="{RowDetails>/CostCenter}" mapFieldToSemanticObject="false" />
+					<!-- Cost Center Name -->
+					<Label id="fin.gl.glview.display.rdp.CostCenterNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostCenter_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostCenter_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CostCenterNameText" text="{RowDetails>/CostCenter_Text}" />
+					<!-- Cost Center Activity Type -->
+					<Label id="fin.gl.glview.display.rdp.CostCtrActivityTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostCtrActivityType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostCtrActivityType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CostCtrActivityTypeText" text="{RowDetails>/CostCtrActivityType}" />
+					<!-- Controlling Object -->
+					<Label id="fin.gl.glview.display.rdp.ControllingObjectLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ControllingObject/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ControllingObject/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ControllingObjectText" text="{RowDetails>/ControllingObject}" />
+					<!-- Controlling Object Class -->
+					<Label id="fin.gl.glview.display.rdp.ControllingObjectClassLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ControllingObjectClass/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ControllingObjectClass/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ControllingObjectClassText" text="{RowDetails>/ControllingObjectClass}" />
+					<!-- Origin Object Type -->
+					<Label id="fin.gl.glview.display.rdp.OriginObjectTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OriginObjectType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OriginObjectType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OriginObjectTypeText" text="{RowDetails>/OriginObjectType}" />
+					<!-- Cost Origin Group -->
+					<Label id="fin.gl.glview.display.rdp.CostOriginGroupLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostOriginGroup/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostOriginGroup/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CostOriginGroupText" text="{RowDetails>/CostOriginGroup}" />
+					<!-- Controlling D/C Code -->
+					<Label id="fin.gl.glview.display.rdp.ControllingDebitCreditCodeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ControllingDebitCreditCode/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ControllingDebitCreditCode/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ControllingDebitCreditCodeText" text="{RowDetails>/ControllingDebitCreditCode}" />
+					<!-- Personnel Number -->
+					<Label id="fin.gl.glview.display.rdp.PersonnelNumberLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PersonnelNumber/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PersonnelNumber/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PersonnelNumberText" text="{RowDetails>/PersonnelNumber}" />
+					<!-- Origin Profit Center -->
+					<Label id="fin.gl.glview.display.rdp.OriginProfitCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OriginProfitCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OriginProfitCenter/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OriginProfitCenterText" text="{RowDetails>/OriginProfitCenter}" />
+					<!-- Origin Cost Center -->
+					<Label id="fin.gl.glview.display.rdp.OriginCostCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OriginCostCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OriginCostCenter/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OriginCostCenterText" text="{RowDetails>/OriginCostCenter}" />
+					<!-- Origin Cost Center Activity Type -->
+					<Label id="fin.gl.glview.display.rdp.OriginCostCtrActivityTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OriginCostCtrActivityType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OriginCostCtrActivityType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OriginCostCtrActivityTypeText" text="{RowDetails>/OriginCostCtrActivityType}" />
+					<!-- Order ID -->
+					<Label id="fin.gl.glview.display.rdp.OrderIDLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OrderID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OrderID/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.OrderIDText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Order" text="{RowDetails>/OrderID}" mapFieldToSemanticObject="false" />
+					<!-- Order Category -->
+					<Label id="fin.gl.glview.display.rdp.OrderCategoryLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OrderCategory/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OrderCategory/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OrderCategoryText" text="{RowDetails>/OrderCategoryType}" />
+					<!-- WBS Element -->
+					<Label id="fin.gl.glview.display.rdp.WBSElementLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/WBSElement/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/WBSElement/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.WBSElementText" text="{RowDetails>/WBSElement}" />
+					<!-- WBS Element Ext -->
+					<Label id="fin.gl.glview.display.rdp.WBSElementExtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/WBSElementExternalID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/WBSElementExternalID/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.WBSElementExtText" text="{RowDetails>/WBSElementExternalID}" />
+					<!-- Project -->
+					<Label id="fin.gl.glview.display.rdp.ProjectLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Project/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Project/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ProjectText" text="{RowDetails>/Project}" />
+					<!-- Project Ext -->
+					<Label id="fin.gl.glview.display.rdp.ProjectExtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ProjectExternalID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ProjectExternalID/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ProjectExtText" text="{RowDetails>/ProjectExternalID}" />
+					<!-- Project Network -->
+					<Label id="fin.gl.glview.display.rdp.ProjectNetworkLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ProjectNetwork/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ProjectNetwork/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ProjectNetworkText" text="{RowDetails>/ProjectNetwork}" />
+					<!-- Business Process -->
+					<Label id="fin.gl.glview.display.rdp.BusinessProcessLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/BusinessProcess/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/BusinessProcess/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.BusinessProcessText" text="{RowDetails>/BusinessProcess}" />
+					<!-- Cost Object -->
+					<Label id="fin.gl.glview.display.rdp.CostObjectLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostObject/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostObject/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CostObjectText" text="{RowDetails>/CostObject}" />
+					<!-- Cost Analysis Resource -->
+					<Label id="fin.gl.glview.display.rdp.CostAnalysisResourceLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CostAnalysisResource/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CostAnalysisResource/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CostAnalysisResourceText" text="{RowDetails>/CostAnalysisResource}" />
+					<!-- Work Item -->
+					<Label id="fin.gl.glview.display.rdp.WorkItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/WorkItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/WorkItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.WorkItemText" text="{RowDetails>/WorkItem}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel8" headerText="{i18n>FILTERS_GROUP_7}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section8"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Accounting Document Category -->
+					<Label id="fin.gl.glview.display.rdp.AccountingDocumentCategoryLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentCategory/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocumentCategory/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountingDocumentCategoryText" text="{RowDetails>/AccountingDocumentCategory}" />
+					<!-- Accounting Document Type -->
+					<Label id="fin.gl.glview.display.rdp.AccountingDocumentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocumentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountingDocumentTypeText" text="{RowDetails>/AccountingDocumentType}" />
+					<!-- Accounting Document Type Name -->
+					<Label id="fin.gl.glview.display.rdp.AccountingDocumentTypeNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AccountingDocumentType_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AccountingDocumentType_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AccountingDocumentTypeNameText" text="{RowDetails>/AccountingDocumentType_Text}" />
+					<!-- Financial Transaction Type -->
+					<Label id="fin.gl.glview.display.rdp.FinancialTransactionTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FinancialTransactionType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FinancialTransactionType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FinancialTransactionTypeText" text="{RowDetails>/FinancialTransactionType}" />
+					<!-- Billing Document Type -->
+					<Label id="fin.gl.glview.display.rdp.BillingDocumentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/BillingDocumentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/BillingDocumentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.BillingDocumentTypeText" text="{RowDetails>/BillingDocumentType}" />
+					<!-- Clearing Accounting Document -->
+				    <Label id="fin.gl.glview.display.rdp.ClearingAccountingDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ClearingAccountingDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ClearingAccountingDocument/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.ClearingAccountingDocumentText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="AccountingDocument" text="{RowDetails>/ClearingAccountingDocument}" mapFieldToSemanticObject="false" />
+					<!-- D/C Code -->
+					<Label id="fin.gl.glview.display.rdp.DebitCreditCodeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DebitCreditCode/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DebitCreditCode/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.DebitCreditCodeText" text="{RowDetails>/DebitCreditCode}" />
+					<!-- Posting Key -->
+					<Label id="fin.gl.glview.display.rdp.PostingKeyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PostingKey/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PostingKey/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PostingKeyText" text="{RowDetails>/PostingKey}" />
+					<!-- Tax Code -->
+					<Label id="fin.gl.glview.display.rdp.TaxCodeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/TaxCode/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/TaxCode/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.TaxCodeText" text="{RowDetails>/TaxCode}" />
+					<!-- House Bank -->
+					<Label id="fin.gl.glview.display.rdp.HouseBankLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/HouseBank/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/HouseBank/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.HouseBankText" text="{RowDetails>/HouseBank}" />
+					<!-- House Bank Account -->
+					<Label id="fin.gl.glview.display.rdp.HouseBankAccountLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/HouseBankAccount/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/HouseBankAccount/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.HouseBankAccountText" text="{RowDetails>/HouseBankAccount}" />
+					<!-- Joint Venture -->
+					<Label id="fin.gl.glview.display.rdp.JointVentureLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/JointVenture/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/JointVenture/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.JointVentureText" text="{RowDetails>/JointVenture}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel9" headerText="{i18n>FILTERS_GROUP_6}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section9"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Fiscal Year Variant -->
+					<Label id="fin.gl.glview.display.rdp.FiscalYearVariantLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FiscalYearVariant/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FiscalYearVariant/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FiscalYearVariantText" text="{RowDetails>/FiscalYearVariant}" />
+					<!-- Fiscal Year -->
+					<Label id="fin.gl.glview.display.rdp.FiscalYearLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FiscalYear/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FiscalYear/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FiscalYearText" text="{RowDetails>/FiscalYear}" />
+					<!-- Fiscal Year Period -->
+					<Label id="fin.gl.glview.display.rdp.FiscalYearPeriodLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FiscalYearPeriod/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FiscalYearPeriod/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FiscalYearPeriodText" text="{RowDetails>/FiscalYearPeriod}" />
+					<!-- Document Date -->
+					<Label id="fin.gl.glview.display.rdp.DocumentDateLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DocumentDate/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DocumentDate/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.DocumentDateText" text="{path:'RowDetails>/DocumentDate', formatter:'._formatDate'}" />
+					<!-- Clearing Document Fiscal Year -->
+				    <Label id="fin.gl.glview.display.rdp.ClearingDocFiscalYearLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ClearingDocFiscalYear/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ClearingDocFiscalYear/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.ClearingDocFiscalYearText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="AccountingDocument" text="{RowDetails>/ClearingDocFiscalYear}" mapFieldToSemanticObject="false" />
+					<!-- Clearing Date -->
+					<Label id="fin.gl.glview.display.rdp.ClearingDateLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ClearingDate/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ClearingDate/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ClearingDateText" text="{path:'RowDetails>/ClearingDate', formatter:'._formatDate'}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel10" headerText="{i18n>FILTERS_GROUP_8}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section10"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Purchasing Document -->
+					<Label id="fin.gl.glview.display.rdp.PurchasingDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PurchasingDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PurchasingDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PurchasingDocumentText" text="{RowDetails>/PurchasingDocument}" />
+					<!-- Purchasing Document Item -->
+					<Label id="fin.gl.glview.display.rdp.PurchasingDocumentItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PurchasingDocumentItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PurchasingDocumentItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PurchasingDocumentItemText" text="{RowDetails>/PurchasingDocumentItem}" />
+					<!-- Sales Order -->
+					<Label id="fin.gl.glview.display.rdp.SalesOrderLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SalesDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SalesDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SalesOrderText" text="{RowDetails>/SalesDocument}" />
+					<!-- Sales Order Item -->
+					<Label id="fin.gl.glview.display.rdp.SalesOrderItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SalesDocumentItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SalesDocumentItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SalesOrderItemText" text="{RowDetails>/SalesDocumentItem}" />
+					<!-- Material -->
+					<Label id="fin.gl.glview.display.rdp.MaterialLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Product/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Product/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.MaterialText" text="{RowDetails>/Product}" />
+					<!-- Material Group -->
+					<Label id="fin.gl.glview.display.rdp.MaterialGroupLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ProductGroup/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ProductGroup/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.MaterialGroupText" text="{RowDetails>/ProductGroup}" />
+					<!-- Sold Material -->
+					<Label id="fin.gl.glview.display.rdp.SoldMaterialLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SoldProduct/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SoldProduct/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SoldMaterialText" text="{RowDetails>/SoldProduct}" />
+					<!-- Plant -->
+					<Label id="fin.gl.glview.display.rdp.PlantLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Plant/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Plant/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PlantText" text="{RowDetails>/Plant}" />
+					<!-- Sales Organization -->
+					<Label id="fin.gl.glview.display.rdp.SalesOrganizationLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SalesOrganization/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SalesOrganization/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SalesOrganizationText" text="{RowDetails>/SalesOrganization}" />
+					<!-- Sales District -->
+					<Label id="fin.gl.glview.display.rdp.SalesDistrictLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SalesDistrict/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SalesDistrict/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SalesDistrictText" text="{RowDetails>/SalesDistrict}" />
+					<!-- Organization Division -->
+					<Label id="fin.gl.glview.display.rdp.OrganizationDivisionLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/OrganizationDivision/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/OrganizationDivision/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.OrganizationDivisionText" text="{RowDetails>/OrganizationDivision}" />
+					<!-- Distribution Channel -->
+					<Label id="fin.gl.glview.display.rdp.DistributionChannelLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/DistributionChannel/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/DistributionChannel/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.DistributionChannelText" text="{RowDetails>/DistributionChannel}" />
+					<!-- Supplier -->
+					<Label id="fin.gl.glview.display.rdp.SupplierLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Supplier/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Supplier/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.SupplierText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Supplier" text="{RowDetails>/Supplier}" mapFieldToSemanticObject="false" />
+					<!-- Supplier Name -->
+					<Label id="fin.gl.glview.display.rdp.SupplierNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Supplier_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Supplier_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SupplierNameText" text="{RowDetails>/Supplier_Text}" />
+					<!-- Customer -->
+					<Label id="fin.gl.glview.display.rdp.CustomerLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Customer/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Customer/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.CustomerText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Customer" text="{RowDetails>/Customer}" mapFieldToSemanticObject="false" />
+					<!-- Customer Name -->
+					<Label id="fin.gl.glview.display.rdp.CustomerNameLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Customer_Text/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Customer_Text/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CustomerNameText" text="{RowDetails>/Customer_Text}" />
+					<!-- Customer Group -->
+					<Label id="fin.gl.glview.display.rdp.CustomerGroupLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/CustomerGroup/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/CustomerGroup/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.CustomerGroupText" text="{RowDetails>/CustomerGroup}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel11" headerText="{i18n>FILTERS_GROUP_9}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section11"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Trading Partner -->
+					<Label id="fin.gl.glview.display.rdp.PartnerCompanyLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerCompany/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerCompany/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerCompanyText" text="{RowDetails>/PartnerCompany}" />
+					<!-- Partner Company Code -->
+					<Label id="fin.gl.glview.display.rdp.PartnerCompanyCodeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerCompanyCode/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerCompanyCode/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerCompanyCodeText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="CompanyCode" text="{RowDetails>/PartnerCompanyCode}" mapFieldToSemanticObject="false" />
+					<!-- Partner Cost Center -->
+					<Label id="fin.gl.glview.display.rdp.PartnerCostCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerCostCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerCostCenter/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerCostCenterText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="CostCenter" text="{RowDetails>/PartnerCostCenter}" mapFieldToSemanticObject="false" />
+					<!-- Partner Profit Center -->
+					<Label id="fin.gl.glview.display.rdp.PartnerProfitCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerProfitCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerProfitCenter/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerProfitCenterText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="ProfitCenter" text="{RowDetails>/PartnerProfitCenter}" mapFieldToSemanticObject="false" />
+					<!-- Partner Functional Area -->
+					<Label id="fin.gl.glview.display.rdp.PartnerFunctionalAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerFunctionalArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerFunctionalArea/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerFunctionalAreaText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="FunctionalArea" text="{RowDetails>/PartnerFunctionalArea}" mapFieldToSemanticObject="false" />
+					<!-- Partner Business Area -->
+					<Label id="fin.gl.glview.display.rdp.PartnerBusinessAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerBusinessArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerBusinessArea/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerBusinessAreaText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="BusinessArea" text="{RowDetails>/PartnerBusinessArea}" mapFieldToSemanticObject="false" />
+					<!-- Partner Segment -->
+					<Label id="fin.gl.glview.display.rdp.PartnerSegmentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerSegment/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerSegment/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerSegmentText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Segment" text="{RowDetails>/PartnerSegment}" mapFieldToSemanticObject="false" />
+					<!-- Partner Controlling Object Class -->
+					<Label id="fin.gl.glview.display.rdp.PartnerControllingObjectClassLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerControllingObjectClass/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerControllingObjectClass/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerControllingObjectClassText" text="{RowDetails>/PartnerControllingObjectClass}" />
+					<!-- Partner Account Assignment -->
+					<Label id="fin.gl.glview.display.rdp.PartnerAccountAssignmentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerAccountAssignment/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerAccountAssignment/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerAccountAssignmentText" text="{RowDetails>/PartnerAccountAssignment}" />
+					<!-- Partner Account Assignment Type -->
+					<Label id="fin.gl.glview.display.rdp.PartnerAccountAssignmentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerAccountAssignmentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerAccountAssignmentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerAccountAssignmentTypeText" text="{RowDetails>/PartnerAccountAssignmentType}" />
+					<!-- Partner Cost Center Activity Type -->
+					<Label id="fin.gl.glview.display.rdp.PartnerCostCtrActivityTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerCostCtrActivityType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerCostCtrActivityType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerCostCtrActivityTypeText" text="{RowDetails>/PartnerCostCtrActivityType}" />
+					<!-- Partner Order ID -->
+					<Label id="fin.gl.glview.display.rdp.PartnerOrderLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerOrder/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerOrder/@sap:quickinfo}" />
+					<target:SmartLink id="fin.gl.glview.display.rdp.PartnerOrderText" beforePopoverOpens="onBeforePopoverOpens4RDP"
+					                  semanticObject="Order" text="{RowDetails>/PartnerOrder}" mapFieldToSemanticObject="false" />
+					<!-- Partner Order Category -->
+					<Label id="fin.gl.glview.display.rdp.PartnerOrderCategoryLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerOrderCategory/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerOrderCategory/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerOrderCategoryText" text="{RowDetails>/PartnerOrderCategory}" />
+					<!-- Partner WBS Element -->
+					<Label id="fin.gl.glview.display.rdp.PartnerWBSElementLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerWBSElement/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerWBSElement/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerWBSElementText" text="{RowDetails>/PartnerWBSElement}" />
+					<!-- Partner WBS Element Ext -->
+					<Label id="fin.gl.glview.display.rdp.PartnerWBSElementExtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerWBSElementExternalID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerWBSElementExternalID/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerWBSElementExtText" text="{RowDetails>/PartnerWBSElementExternalID}" />
+					<!-- Partner Project -->
+					<Label id="fin.gl.glview.display.rdp.PartnerProjectLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerProject/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerProject/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerProjectText" text="{RowDetails>/PartnerProject}" />
+					<!-- Partner Project Ext -->
+					<Label id="fin.gl.glview.display.rdp.PartnerProjectExtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerProjectExternalID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerProjectExternalID/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerProjectExtText" text="{RowDetails>/PartnerProjectExternalID}" />
+					<!-- Partner Project Network -->
+					<Label id="fin.gl.glview.display.rdp.PartnerProjectNetworkLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerProjectNetwork/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerProjectNetwork/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerProjectNetworkText" text="{RowDetails>/PartnerProjectNetwork}" />
+					<!-- Partner Sales Document -->
+					<Label id="fin.gl.glview.display.rdp.PartnerSalesDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerSalesDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerSalesDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerSalesDocumentText" text="{RowDetails>/PartnerSalesDocument}" />
+					<!-- Partner Sales Document Item -->
+					<Label id="fin.gl.glview.display.rdp.PartnerSalesDocumentItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerSalesDocumentItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerSalesDocumentItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerSalesDocumentItemText" text="{RowDetails>/PartnerSalesDocumentItem}" />
+					<!-- Partner Business Process -->
+					<Label id="fin.gl.glview.display.rdp.PartnerBusinessProcessLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerBusinessProcess/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerBusinessProcess/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerBusinessProcessText" text="{RowDetails>/PartnerBusinessProcess}" />
+					<!-- Partner Cost Object -->
+					<Label id="fin.gl.glview.display.rdp.PartnerCostObjectLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerCostObject/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerCostObject/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerCostObjectText" text="{RowDetails>/PartnerCostObject}" />
+					<!-- Partner Fund -->
+					<Label id="fin.gl.glview.display.rdp.PartnerFundLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerFund/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerFund/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerFundText" text="{RowDetails>/PartnerFund}" />
+					<!-- Partner Grant -->
+					<Label id="fin.gl.glview.display.rdp.PartnerGrantLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerGrant/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerGrant/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerGrantText" text="{RowDetails>/PartnerGrant}" />
+					<!-- Partner Budget Period -->
+					<Label id="fin.gl.glview.display.rdp.PartnerBudgetPeriodLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PartnerBudgetPeriod/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PartnerBudgetPeriod/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PartnerBudgetPeriodText" text="{RowDetails>/PartnerBudgetPeriod}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel12" headerText="{i18n>FILTERS_GROUP_11}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section12"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Financial Management Area -->
+					<Label id="fin.gl.glview.display.rdp.FinancialManagementAreaLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FinancialManagementArea/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FinancialManagementArea/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FinancialManagementAreaText" text="{RowDetails>/FinancialManagementArea}" />
+					<!-- Fund -->
+					<Label id="fin.gl.glview.display.rdp.FundLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/Fund/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/Fund/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FundText" text="{RowDetails>/Fund}" />
+					<!-- Grant -->
+					<Label id="fin.gl.glview.display.rdp.GrantIDLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/GrantID/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/GrantID/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.GrantIDText" text="{RowDetails>/GrantID}" />
+					<!-- Budget Period -->
+					<Label id="fin.gl.glview.display.rdp.BudgetPeriodLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/BudgetPeriod/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/BudgetPeriod/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.BudgetPeriodText" text="{RowDetails>/BudgetPeriod}" />
+					<!-- Funds Center -->
+					<Label id="fin.gl.glview.display.rdp.FundsCenterLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FundsCenter/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FundsCenter/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FundsCenterText" text="{RowDetails>/FundsCenter}" />
+					<!-- Funded Program -->
+					<Label id="fin.gl.glview.display.rdp.FundedProgramLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/FundedProgram/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/FundedProgram/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.FundedProgramText" text="{RowDetails>/FundedProgram}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel13" headerText="{i18n>FILTERS_GROUP_12}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section13"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Assignment Reference -->
+					<Label id="fin.gl.glview.display.rdp.AssignmentReferenceLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/AssignmentReference/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/AssignmentReference/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.AssignmentReferenceText" text="{RowDetails>/AssignmentReference}" />
+					<!-- Reference Document -->
+					<Label id="fin.gl.glview.display.rdp.ReferenceDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReferenceDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReferenceDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReferenceDocumentText" text="{RowDetails>/ReferenceDocument}" />
+					<!-- Reference Document Item -->
+					<Label id="fin.gl.glview.display.rdp.ReferenceDocumentItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReferenceDocumentItemText" text="{RowDetails>/ReferenceDocumentItem}" />
+					<!-- Reference Document Type -->
+					<Label id="fin.gl.glview.display.rdp.ReferenceDocumentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReferenceDocumentTypeText" text="{RowDetails>/ReferenceDocumentType}" />
+					<!-- Reference Document Context -->
+					<Label id="fin.gl.glview.display.rdp.ReferenceDocumentContextLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentContext/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/ReferenceDocumentContext/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.ReferenceDocumentContextText" text="{RowDetails>/ReferenceDocumentContext}" />
+					<!-- Predecessor Reference Document -->
+					<Label id="fin.gl.glview.display.rdp.PredecessorReferenceDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PredecessorReferenceDocumentText" text="{RowDetails>/PredecessorReferenceDocument}" />
+					<!-- Predecessor Reference Document Item -->
+					<Label id="fin.gl.glview.display.rdp.PredecessorReferenceDocItemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocItem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocItem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PredecessorReferenceDocItemText" text="{RowDetails>/PredecessorReferenceDocItem}" />
+					<!-- Predecessor Reference Document Type -->
+					<Label id="fin.gl.glview.display.rdp.PredecessorReferenceDocTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PredecessorReferenceDocTypeText" text="{RowDetails>/PredecessorReferenceDocType}" />
+					<!-- Predecessor Reference Document Context -->
+					<Label id="fin.gl.glview.display.rdp.PredecessorReferenceDocCntxtLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocCntxt/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/PredecessorReferenceDocCntxt/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.PredecessorReferenceDocCntxtText" text="{RowDetails>/PredecessorReferenceDocCntxt}" />
+					<!-- Invoice Reference -->
+					<Label id="fin.gl.glview.display.rdp.InvoiceReferenceLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/InvoiceReference/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/InvoiceReference/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.InvoiceReferenceText" text="{RowDetails>/InvoiceReference}" />
+					<!-- Invoice Item Reference -->
+					<Label id="fin.gl.glview.display.rdp.InvoiceItemReferenceLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/InvoiceItemReference/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/InvoiceItemReference/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.InvoiceItemReferenceText" text="{RowDetails>/InvoiceItemReference}" />
+					<!-- Invoice Reference Fiscal Year -->
+					<Label id="fin.gl.glview.display.rdp.InvoiceReferenceFiscalYearLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/InvoiceReferenceFiscalYear/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/InvoiceReferenceFiscalYear/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.InvoiceReferenceFiscalYearText" text="{RowDetails>/InvoiceReferenceFiscalYear}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+          <Panel id="fin.gl.glview.display.rdp.Panel14" headerText="{i18n>FILTERS_GROUP_10}" expandable="true">
+          <f:SimpleForm id="fin.gl.glview.display.rdp.Section14"
+          				ariaLabelledBy="fin.gl.glview.display.rdp.Section.Title"
+		                editable="false"
+			            layout="ResponsiveGridLayout"
+			            breakpointM="400"
+			            labelSpanM="6">
+               <f:content>
+					<!-- Sender Company Code -->
+					<Label id="fin.gl.glview.display.rdp.SenderCompanyCodeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderCompanyCode/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderCompanyCode/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderCompanyCodeText" text="{RowDetails>/SenderCompanyCode}" />
+					<!-- Sender G/L Account -->
+					<Label id="fin.gl.glview.display.rdp.SenderGLAccountLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderGLAccount/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderGLAccount/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderGLAccountText" text="{RowDetails>/SenderGLAccount}" />
+					<!-- Sender Account Assignment -->
+					<Label id="fin.gl.glview.display.rdp.SenderAccountAssignmentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderAccountAssignment/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderAccountAssignment/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderAccountAssignmentText" text="{RowDetails>/SenderAccountAssignment}" />
+					<!-- Sender Account Assignment Type -->
+					<Label id="fin.gl.glview.display.rdp.SenderAccountAssignmentTypeLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderAccountAssignmentType/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderAccountAssignmentType/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderAccountAssignmentTypeText" text="{RowDetails>/SenderAccountAssignmentType}" />
+					<!-- Sender Fiscal Year -->
+					<Label id="fin.gl.glview.display.rdp.SenderFiscalYearLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderFiscalYear/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderFiscalYear/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderFiscalYearText" text="{RowDetails>/SenderFiscalYear}" />
+					<!-- Sender Accounting Document -->
+					<Label id="fin.gl.glview.display.rdp.SenderAccountingDocumentLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderAccountingDocument/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderAccountingDocument/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderAccountingDocumentText" text="{RowDetails>/SenderAccountingDocument}" />
+					<!-- Sender Logical System -->
+					<Label id="fin.gl.glview.display.rdp.SenderLogicalSystemLabel"
+				           design="Bold" text="{/#C_JournalEntryItemBrowserResult/SenderLogicalSystem/@sap:label}"
+						   tooltip="{/#C_JournalEntryItemBrowserResult/SenderLogicalSystem/@sap:quickinfo}" />
+					<Text id="fin.gl.glview.display.rdp.SenderLogicalSystemText" text="{RowDetails>/SenderLogicalSystem}" />
+               </f:content>
+          </f:SimpleForm>
+          </Panel>
+     </Popover>
+</core:FragmentDefinition>

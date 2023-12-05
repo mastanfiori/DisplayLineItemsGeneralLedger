@@ -1,0 +1,17 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<core:FragmentDefinition id="fin.gl.glview.display.ShareActionSheetFragment"
+						 xmlns="sap.m"
+                         xmlns:core="sap.ui.core"
+                         xmlns:footerbar="sap.ushell.ui.footerbar">
+                         <ActionSheet id="fin.gl.glview.display.action.sheet" placement="VerticalPreferedBottom">
+                              <buttons>
+                                   <Button id="fin.gl.glview.display.share.email" icon="sap-icon://email" press="onShareEmailPress" text="{share>/emailButtonText}" />
+                                   <Button id="fin.gl.glview.display.share.jam" icon="sap-icon://share-2" press="onShareInJamPress" text="{share>/jamButtonText}" visible="{share>/jamVisible}" />
+                                   <footerbar:AddBookmarkButton id="fin.gl.glview.display.share.tile" tileIcon="sap-icon://Fiori5/F0706" text="{share>/bookmarkButtonText}" />
+                              </buttons>
+                         </ActionSheet>
+</core:FragmentDefinition>

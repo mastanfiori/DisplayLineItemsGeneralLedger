@@ -1,0 +1,168 @@
+{
+	"_version": "1.11.0",
+	"sap.app": {
+		"id": "fin.gl.glview.display",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "9.0.3"
+		},
+		"title": "{{FULLSCREEN_TITLE_NEWII}}",
+		"description": "{{APP_DESCRIPTION_NEWII}}",
+		"resources": "resources.json",
+		"ach": "FI-FIO-GL",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.32.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "/sap/opu/odata/sap/FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV/",
+				"type": "OData",
+				"settings": {
+					"annotations": ["mainAnnotations"],
+					"localUri": "localService/metadata.xml"
+				}
+			},
+			"mainAnnotations": {
+				"uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='FAC_GLV_GL_ACCOUNT_LINE_ANNO_MDL',Version='0001')/$value/",
+				"type": "ODataAnnotation",
+				"settings": {
+					"localUri": "localService/FAC_GLV_GL_ACCOUNT_LINE_ANNO_MDL.xml"
+				}
+			}
+		},
+		"crossNavigation": {
+			"inbounds": {}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"fullWidth": true,
+		"icons": {
+			"icon": "sap-icon://Fiori5/F0706",
+			"favIcon": "./resources/sap/ca/ui/themes/base/img/favicon/F0706_Dsp_GL_Acc_Line_Items.ico"
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": false
+		},
+		"supportedThemes": ["sap_hcb", "sap_bluecrystal"]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "fin.gl.glview.display.view.Main",
+			"id": "fin.gl.glview.display.view.Main",
+			"type": "XML"
+		},
+		"flexEnabled": true,
+		"dependencies": {
+			"minUI5Version": "1.90.2",
+			"libs": {
+				"sap.f": {
+					"lazy": false
+				},
+				"sap.fin.central.lib": {
+					"lazy": false
+				},
+				"sap.m": {
+					"lazy": false
+				},
+				"sap.me": {
+					"lazy": false
+				},
+				"sap.ui.comp": {
+					"lazy": false
+				},
+				"sap.ui.generic.app": {
+					"lazy": false
+				},
+				"sap.ui.layout": {
+					"lazy": false
+				},
+				"sap.ui.table": {
+					"lazy": false
+				},
+				"sap.ui.unified": {
+					"lazy": false
+				},
+				"sap.ushell": {
+					"lazy": false
+				}
+			},
+			"components": {}
+		},
+		"config": {
+			"sapFiori2Adaptation": true
+		},
+		"commands": {
+			"Enter": {
+				"shortcut": "Enter"
+			},
+			"Share": {
+				"shortcut": "Shift+Ctrl+S"
+			},
+			"Details": {
+				"shortcut": "Shift+Ctrl+Alt+A"
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "fin.gl.glview.display.i18n.i18n"
+				}
+			},
+			"": {
+				"preload": false,
+				"dataSource": "mainService",
+				"settings": {
+					"metadataUrlParams": {
+						"countSupported": false,
+						"defaultCountMode": "Inline",
+						"sap-documentation": "heading,quickinfo",
+						"sap-value-list": "none"
+					}
+				}
+			}
+		},
+		"services": {
+			"ShellUIService": {
+				"factoryName": "sap.ushell.ui5service.ShellUIService"
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"async": true,
+				"viewType": "XML",
+				"viewPath": "fin.gl.glview.display.view",
+				"controlId": "fioriContent"
+			},
+			"routes": [],
+			"targets": {}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/fin_gl_litb_glv"
+	},
+	"sap.fiori": {
+		"registrationIds": ["F2217"],
+		"archeType": "transactional"
+	},
+	"sap.copilot": {
+		"contextAnalysis": {
+			"allowAddingObjectsFromAppScreenToCollection": true
+		}
+	}
+}

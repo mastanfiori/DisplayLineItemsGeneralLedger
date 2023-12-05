@@ -1,0 +1,436 @@
+<!--
+
+    Copyright (C) 2009-2021 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+	<edmx:Reference
+		Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='SFINODATA1')/$value"><edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/></edmx:Reference>
+	<edmx:Reference
+		Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='SFINODATA1')/$value"><edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/></edmx:Reference>
+	<edmx:Reference
+		Uri="../../catalogservice;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='SFINODATA1')/$value"><edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/></edmx:Reference>
+	<edmx:Reference Uri="../../../sap/fac_glv_gl_account_line_items_srv/$metadata"><edmx:Include Namespace="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV" Alias="SAP"/></edmx:Reference>
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="fac_glv_gl_account_line_anno_mdl.v1">
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/SourceReferenceDocumentItem"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/SourceReferenceDocSubitem"><Annotation Term="UI.HiddenFilter"/></Annotations><Annotations/>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AmountInDisplayCurrency"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CreationDateTime"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/SalesDocumentItem"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/OffsettingChartOfAccounts"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CustomerServiceNotification"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/NumberOfItems"><Annotation Term="UI.HiddenFilter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/GLAccountAuthorizationGroup"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/SupplierBasicAuthorizationGrp"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CustomerBasicAuthorizationGrp"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AcctgDocTypeAuthorizationGroup"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/OrderType"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/SalesOrderType"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AssetClass"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/P_DisplayCurrency"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/P_ExchangeRateType"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/P_ExchangeRateDate"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/P_KeyDate"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/P_ClearingStatusSelection"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ID"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CompanyCode"><Annotation Term="Common.SemanticObject" String="CompanyCode"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/AccountingDocument"><Annotation Term="Common.SemanticObject" String="AccountingDocument"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ControllingArea"><Annotation Term="Common.SemanticObject" String="ControllingArea"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/GLAccount"><Annotation Term="Common.SemanticObject" String="GLAccount"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/CostCenter"><Annotation Term="Common.SemanticObject" String="CostCenter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/ProfitCenter"><Annotation Term="Common.SemanticObject" String="ProfitCenter"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/Supplier"><Annotation Term="Common.SemanticObject" String="Supplier"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/Customer"><Annotation Term="Common.SemanticObject" String="Customer"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult/OrderID"><Annotation Term="Common.SemanticObject" String="Order"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.C_JournalEntryItemBrowserResult">
+				<Annotation Term="UI.FieldGroup" Qualifier="_ACCOUNT">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ChartOfAccounts"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ProfitCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FunctionalArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BusinessArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Segment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GLAccountType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AlternativeGLAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CountryChartOfAccounts"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FinancialAccountType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OffsettingAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OffsettingAccountType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountAssignment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountAssignmentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SubLedgerAcctLineItemType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Account Assignment Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_ACCRUAL">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccrualObjectType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccrualObject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccrualSubobject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccrualItemType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Accrual Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_ADMIN">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="LogicalSystem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsReversal"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsReversed"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ReversalReferenceDocumentCntxt"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ReversalReferenceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsSettlement"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsSettled"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocCreatedByUser"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreationDate"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Administrative Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_AMOUNT1_QUANTITY">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInBalanceTransacCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInTransactionCurrency"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInCompanyCodeCurrency"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInGlobalCurrency"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInObjectCurrency"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Quantity"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInCoCodeCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInCoCodeCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInTransCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInTransCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInBalanceTransCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInBalanceTransCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInGlobalCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInGlobalCrcy"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="TransactionCurrency"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Amount and Quantity Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_AMOUNTS_FREE">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency1"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency2"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency3"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency4"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency5"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency6"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency7"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInFreeDefinedCurrency8"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy1"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy1"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy2"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy2"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy3"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy3"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy4"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy4"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy5"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy5"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy6"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy6"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy7"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy7"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitAmountInFreeDefinedCrcy8"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CreditAmountInFreeDefinedCrcy8"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Amount Fields in Freely Defined Currencies"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_ASSET">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="MasterFixedAsset"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FixedAsset"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AssetTransactionType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GroupMasterFixedAsset"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GroupFixedAsset"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Asset Accounting Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_BASIC">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Ledger"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CompanyCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GLAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PostingDate"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ClearingDate"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Basic Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_CONTROLLING">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ControllingArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CostCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OriginObjectType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ControllingObject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CostOriginGroup"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ControllingDebitCreditCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PersonnelNumber"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BillableControl"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ControllingObjectClass"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OriginCostCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OriginProfitCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OriginCostCtrActivityType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CostCtrActivityType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OrderID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OrderCategory"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="WBSElementExternalID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="WBSElement"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ProjectExternalID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Project"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ProjectNetwork"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BusinessProcess"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CostObject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CostAnalysisResource"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="WorkItem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Cost Accounting Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_DOCUMENT">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FinancialTransactionType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DebitCreditCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocumentCategory"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PostingKey"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="TaxCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="HouseBank"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="HouseBankAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ClearingAccountingDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BillingDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="JointVenture"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SourceLedger"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BusinessTransactionType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Financial Accounting Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_FISCAL">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FiscalYear"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="LedgerFiscalYear"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FiscalPeriod"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FiscalYearPeriod"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DocumentDate"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Fiscal Calendar Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_LOGISTICS">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PurchasingDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SalesDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Product"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Plant"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Supplier"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Customer"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SalesOrganization"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DistributionChannel"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="OrganizationDivision"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SoldProduct"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SoldProductGroup"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CustomerGroup"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SalesDistrict"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ProductGroup"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ServiceDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ServiceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ServiceDocumentItem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Logistic Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_PARTNER">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerCostCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerProfitCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerFunctionalArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerBusinessArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerCompany"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerSegment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerCompanyCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerControllingObjectClass"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerAccountAssignment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerAccountAssignmentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerCostCtrActivityType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerOrder"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerOrderCategory"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerWBSElement"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerProject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerSalesDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerProjectNetwork"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerBusinessProcess"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerCostObject"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerFund"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerGrant"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerBudgetPeriod"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerWBSElementExternalID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerProjectExternalID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerServiceDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerServiceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PartnerServiceDocumentItem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Partner Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_PUBLIC_SECTOR">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FinancialManagementArea"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Fund"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GrantID"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="BudgetPeriod"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FundsCenter"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="FundedProgram"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Public Sector Management Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_REFERENCE">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ReferenceDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ReferenceDocumentContext"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ReferenceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PredecessorReferenceDocType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PredecessorReferenceDocCntxt"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PredecessorReferenceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AssignmentReference"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="InvoiceReference"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="InvoiceReferenceFiscalYear"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Reference Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.FieldGroup" Qualifier="_SENDER">
+					<Record>
+						<PropertyValue Property="Data">
+							<Collection>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderGLAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderAccountAssignment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderAccountAssignmentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderAccountingDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderCompanyCode"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderFiscalYear"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SenderLogicalSystem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SourceReferenceDocumentType"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SourceLogicalSystem"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SourceReferenceDocumentCntxt"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="SourceReferenceDocument"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+								<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsCommitment"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+							</Collection>
+						</PropertyValue><PropertyValue Property="Label" String="Source System Fields"/></Record>
+				</Annotation>
+				<Annotation Term="UI.HeaderInfo">
+					<Record><PropertyValue Property="TypeName" String="Journal Entry"/><PropertyValue Property="TypeNamePlural" String="Journal Entries"/>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocument"/></Record>
+						</PropertyValue>
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField"><PropertyValue Property="Value" Path="LedgerGLLineItem"/></Record>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.Identification">
+					<Collection>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GLAccount"/><Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/></Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="IsCleared"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="CompanyCode"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="GLAccount"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AssignmentReference"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocument"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AccountingDocumentType"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PostingDate"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="PostingKey"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="AmountInCompanyCodeCurrency"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="TaxCode"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ClearingAccountingDocument"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="ProfitCenter"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="Segment"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="DocumentItemText"/></Record>
+						<Record Type="UI.DataField"><PropertyValue Property="Value" Path="NumberOfItems"/></Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection>
+						<PropertyPath>Ledger</PropertyPath>
+						<PropertyPath>CompanyCode</PropertyPath>
+						<PropertyPath>GLAccount</PropertyPath>
+						<PropertyPath>PostingDate</PropertyPath>
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_CostCenterActivityTypeVHType/ControllingArea"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_CostCenterVHType/ControllingArea"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_CostCenterVHType/CostCenterName"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_CostCenterVHType/CostCenterResponsibilityArea"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Customer_VHType/CustomerAccountGroup"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Customer_VHType/AuthorizationGroup"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Customer_VHType/IsBusinessPurposeCompleted"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_FiscalPeriodForVariantType/FiscalYearVariant"><Annotation Term="Common.IsFiscalYearVariant"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_FiscalYearForVariantType/FiscalYearVariant"><Annotation Term="Common.IsFiscalYearVariant"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_FiscalYearVariantType/FiscalYearVariant"><Annotation Term="Common.IsFiscalYearVariant"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_OperationalAcctgDocItemType/ID"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_PersWrkAgrmtSrchHelpType/PersonWorkAgrmtAuthznGrpg"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_PersWrkAgrmtSrchHelpType/AuthorizationGroup"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_PersWrkAgrmtSrchHelpType/IsBusinessPurposeCompleted"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_ProjectByExternalIDType/PlannedStartDate"><Annotation Term="Common.IsDayOfCalendarMonth"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_ProjectByExternalIDType/PlannedEndDate"><Annotation Term="Common.IsDayOfCalendarMonth"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Supplier_VHType/AuthorizationGroup"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Supplier_VHType/SupplierAccountGroup"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_Supplier_VHType/IsBusinessPurposeCompleted"><Annotation Term="UI.HiddenFilter"/><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_TaxCodeValueHelpType/TaxCalculationProcedure"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/EmailAddress"><Annotation Term="Communication.IsEmailAddress"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/ContactCardRole"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/ContactCardType"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/ContactCardNavLinkSemanticObj"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/ContactCardNavLinkQueryPart"><Annotation Term="UI.Hidden"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/PhoneNumber"><Annotation Term="Communication.IsPhoneNumber"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/MobilePhoneNumber"><Annotation Term="Communication.IsPhoneNumber"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType/FaxNumber"><Annotation Term="Communication.IsPhoneNumber"/></Annotations>
+			<Annotations Target="FAC_GLV_GL_ACCOUNT_LINE_ITEMS_SRV.I_UserContactCardType">
+				<Annotation Term="Communication.Contact">
+					<Record><PropertyValue Property="fn" Path="FullName"/><PropertyValue Property="org" Path="Department"/><PropertyValue Property="role" Path="FunctionalTitleName"/>
+						<PropertyValue Property="n">
+							<Record><PropertyValue Property="given" Path="FirstName"/><PropertyValue Property="surname" Path="LastName"/></Record>
+						</PropertyValue>
+						<PropertyValue Property="tel">
+							<Collection>
+								<Record><PropertyValue Property="type" EnumMember="Communication.PhoneType/fax"/><PropertyValue Property="uri" Path="FaxNumber"/></Record>
+								<Record><PropertyValue Property="type" EnumMember="Communication.PhoneType/cell"/><PropertyValue Property="uri" Path="MobilePhoneNumber"/></Record>
+								<Record><PropertyValue Property="type" EnumMember="Communication.PhoneType/work"/><PropertyValue Property="uri" Path="PhoneNumber"/></Record>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="email">
+							<Collection>
+								<Record><PropertyValue Property="type" EnumMember="Communication.ContactInformationType/work"/><PropertyValue Property="address" Path="EmailAddress"/></Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

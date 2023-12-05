@@ -1,0 +1,3 @@
+/* styles for the currency control used in the row details pop-up */
+.position .sapUiUfdCurrencyAlign { width: 75% !important; }
+.hidden { visibility: hidden; }

@@ -1,0 +1,13 @@
+{
+  "application": "fin.gl.glview.display",
+  "version": "9.0.3",
+  "buildNumber": "1",
+  "buildId": "1",
+  "branch": "detached",
+  "revision": "090b97a85462b0de72f21401100a2d0db42e4c69",
+  "GitURL": "",
+  "buildStatus": "${env.buildStatus}",
+  "translationComplete": "${env.translationComplete}",
+  "cidi": "${env.cidi}",
+  "cfdCM": "${env.cfdCM}"
+}
